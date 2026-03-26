@@ -7,7 +7,7 @@ export default defineConfig({
   workers: 1,
   reporter: [['html', { open: 'never', outputFolder: 'playwright-report' }]],
   use: {
-    baseURL: `https://woodland-grant-journey-tests.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`,
+    baseURL: `https://grants-ui.${process.env.ENVIRONMENT}.cdp-int.defra.cloud`,
     headless: true,
     screenshot: 'only-on-failure'
   },

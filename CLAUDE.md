@@ -26,7 +26,7 @@ Runs inside the `grants-ui` GitHub Actions CI pipeline against a dockerised inst
 Runs against a CDP-deployed instance of `grants-ui`. The base URL is built from the `ENVIRONMENT` env var:
 
 ```
-https://woodland-grant-journey-tests.${ENVIRONMENT}.cdp-int.defra.cloud
+https://grants-ui.${ENVIRONMENT}.cdp-int.defra.cloud
 ```
 
 Triggered via the CDP Portal. The HTML report is published to S3 after the run. Config: `playwright.config.js`.
