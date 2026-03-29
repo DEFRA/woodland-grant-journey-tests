@@ -10,10 +10,10 @@ import { expect } from '@playwright/test'
  * @param {string} crn
  */
 export async function login(page, crn) {
-  await page.goto('/woodland')
+  await page.goto('/woodland', { waitUntil: 'commit' })
 
   const crnInput = page.locator('input#crn')
-  if (await crnInput.isVisible({ timeout: 5000 }).catch(() => false)) {
+  if (await crnInput.isVisible({ timeout: 30_000 }).catch(() => false)) {
     await crnInput.fill(crn)
     await page.locator('input#password').fill(process.env.DEFRA_ID_USER_PASSWORD ?? 'x')
     await page.locator('button[type="submit"]').click()

@@ -68,7 +68,7 @@ test/
 
 ### Authentication
 
-All journey tests authenticate via the `Defra ID` OIDC provider used `grants-ui`. In local running and in the CDP Dev environment this is a stub (`fct-defra-id-stub`). In the CDP Test environment this is a real instance of Defra ID. The `login()` helper in `test/helpers/auth.js` handles the full flow:
+All journey tests authenticate via the `Defra ID` OIDC provider used by `grants-ui`. In local running, CI, and the CDP Dev environment this is a stub (`fct-defra-id-stub`). In the CDP Test environment this is a real instance of Defra ID, which can be slower to respond and must be catered for. The `login()` helper in `test/helpers/auth.js` handles the full flow:
 
 1. Navigate to a protected URL → app redirects to stub login page
 2. Fill in CRN + password and submit
