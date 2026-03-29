@@ -60,9 +60,51 @@ docker build . --platform=linux/amd64
 
 ```
 test/
+  utils/
+    auth.js              # login() helper — handles OIDC flow
   specs/
-    home.spec.js   # Example test — navigates to /woodland and checks HTTP 200
+    happy-path.spec.js   # Full WMP happy path journey
 ```
+
+### Authentication
+
+All journey tests authenticate via the `Defra ID` OIDC provider used `grants-ui`. In local running and in the CDP Dev environment this is a stub (`fct-defra-id-stub`). In the CDP Test environment this is a real instance of Defra ID. The `login()` helper in `test/helpers/auth.js` handles the full flow:
+
+1. Navigate to a protected URL → app redirects to stub login page
+2. Fill in CRN + password and submit
+3. Stub redirects back via OIDC to `/auth/sign-in-oidc`
+
+Each spec must supply its own CRN so tests can run in parallel without sharing session state. There is no default — `crn` is required.
+**Password:** controlled by `DEFRA_ID_USER_PASSWORD` env var (default: `x`)
+
+The stub must be running and reachable for journey tests to work. In CI it runs as a Docker service defined in `grants-ui/compose.tests.yml`.
+
+### WMP journey pages (in order)
+
+All pages are prefixed `/woodland/`:
+
+| Path | Description |
+|---|---|
+| `/start` | Application start page |
+| `/check-details` | Confirm applicant/org details |
+| `/tasks` | Task list |
+| `/eligibility-land-registered` | Land registered with RPA? |
+| `/eligibility-management-control` | Management control for duration? |
+| `/eligibility-tenant` | Tenant of a public body? |
+| `/eligibility-grazing-rights` | Land with grazing rights? |
+| `/eligibility-valid-wmp` | Existing valid WMPs? |
+| `/eligibility-higher-tier` | Intend to apply for CSHT? |
+| `/total-area-of-land-parcels` | Total area (ha) of land parcels |
+| `/total-area-of-land-over-10-years-old` | Woodland over 10 years old (ha) |
+| `/total-area-of-land-under-10-years-old` | Newly planted woodland under 10 years (ha) |
+| `/centre-of-woodland` | Grid reference for centre of woodland |
+| `/which-forestry-commission-team` | FC team advising |
+| `/summary` | Check your answers |
+| `/potential-funding` | Potential funding estimate |
+| `/declaration` | Submit your application |
+| `/confirmation` | Application received |
+
+Conditional pages (not on happy path): `/eligibility-countersignature`, `/eligibility-tenant-obligations`, `/eligibility-wmp-agreement`, and three exit/terminal pages.
 
 ## CI pipeline integration
 

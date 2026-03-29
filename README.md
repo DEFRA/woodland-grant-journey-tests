@@ -72,31 +72,46 @@ npm run test:ci
 - Automated execution on creating and updating a `grants-ui` PR
 - Can also be run locally using the [grants-ui compose file](https://github.com/DEFRA/grants-ui/blob/main/compose.tests.yml)
 
+## Test Coverage
+
+| Spec | Description |
+|---|---|
+| `happy-path.spec.js` | Full eligible WMP application: sign in → start → check details → eligibility → woodland details → summary → declaration → confirmation |
+
 ## Project Structure
 
 ```
 woodland-grant-journey-tests/
 ├── test/
-│   └── specs/                  # Playwright test files (*.spec.js)
+│   ├── utils/
+│   │   └── auth.js             # login() helper for OIDC flow
+│   └── specs/
+│       └── happy-path.spec.js
 ├── playwright.config.js        # CDP Portal config
 ├── playwright.local.config.js  # Local development config
 └── playwright.ci.config.js     # CI pipeline config
 ```
 
-## Writing Tests
+## Authentication
 
-Tests are written using the Playwright test runner in `test/specs/`. Example:
+Journey tests authenticate via the `Defra ID` OIDC provider for the environment in use (real instance or stub). The `login()` helper handles the full OIDC redirect flow automatically.
+
+**Password:** set via `DEFRA_ID_USER_PASSWORD` env var (default: `x`)
+
+Each test must supply its own CRN so tests can run in parallel without sharing session state.
 
 ```js
-import { test, expect } from '@playwright/test'
+import { login } from '../utils/auth.js'
 
-test.describe('Woodland', () => {
-  test('should load the woodland page', async ({ page }) => {
-    const response = await page.goto('/woodland')
-    expect(response.status()).toBe(200)
-  })
+test('my journey test', async ({ page }) => {
+  await login(page, { crn: '1234567890' })
+  // ... rest of test
 })
 ```
+
+## Writing Tests
+
+Tests are written using the Playwright test runner in `test/specs/`. Use `login()` from `test/helpers/auth.js` for any test that requires authentication.
 
 ## Test Reports
 
