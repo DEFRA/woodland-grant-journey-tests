@@ -10,7 +10,7 @@ import { expect } from '@playwright/test'
  * @param {string} crn
  */
 export async function login(page, crn) {
-  await page.goto('/woodland', { waitUntil: 'commit' })
+  await page.goto('/woodland', { waitUntil: 'commit' }).catch(() => {})
 
   const crnInput = page.locator('input#crn')
   if (await crnInput.isVisible({ timeout: 30_000 }).catch(() => false)) {

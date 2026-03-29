@@ -10,7 +10,7 @@ test.describe('Successful application journey happy path', () => {
     await clearApplicationState(CRN, SBI)
   })
 
-  test('completes a full eligible application', async ({ page }) => {
+  test('completes a full eligible application', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
     await login(page, CRN)
 
     await test.step('start', async () => {

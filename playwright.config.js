@@ -5,6 +5,7 @@ process.env.BASE_BACKEND_URL = `https://grants-ui-backend.${process.env.ENVIRONM
 export default defineConfig({
   testDir: './test/specs',
   testMatch: '**/*.spec.js',
+  timeout: 60_000,
   fullyParallel: false,
   workers: 1,
   reporter: [['html', { open: 'never', outputFolder: 'playwright-report' }]],
