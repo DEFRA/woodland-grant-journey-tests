@@ -18,6 +18,6 @@ export async function login(page, crn) {
     await page.locator('input#password').fill(process.env.DEFRA_ID_USER_PASSWORD ?? 'x')
     await page.locator('button[type="submit"]').click()
 
-    await expect(page.getByRole('heading', { level: 1 })).not.toContainText('Sign in', { timeout: 20_000 })
+    await expect(page).toHaveURL(/\/woodland/, { timeout: 30_000 })
   }
 }
