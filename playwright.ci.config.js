@@ -5,7 +5,7 @@ export default defineConfig({
   testMatch: '**/*.spec.js',
   fullyParallel: false,
   workers: parseInt(process.env.MAX_INSTANCES) || 1,
-  reporter: 'list',
+  reporter: [['list', { printSteps: true }]],
   use: {
     baseURL: process.env.BASE_URL,
     headless: true,
