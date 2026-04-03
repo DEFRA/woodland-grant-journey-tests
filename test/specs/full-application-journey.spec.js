@@ -22,6 +22,15 @@ test.describe('Woodland Management Plan application', () => {
     await test.step('check-details', async () => {
       await expect(page).toHaveURL(/\/woodland\/check-details/)
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Confirm your details')
+      await page.getByRole('radio', { name: 'No' }).click()
+      await page.getByRole('button', { name: 'Continue' }).click()
+
+      await expect(page).toHaveURL(/\/woodland\/check-details/)
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Contact the RPA to update your details')
+      await page.getByRole('button', { name: 'Continue' }).click()
+
+      await expect(page).toHaveURL(/\/woodland\/check-details/)
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Confirm your details')
       await page.getByRole('radio', { name: 'Yes' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
     })
@@ -57,11 +66,19 @@ test.describe('Woodland Management Plan application', () => {
     await test.step('eligibility-land-registered', async () => {
       await expect(page).toHaveURL(/\/woodland\/eligibility-land-registered/)
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Is all the land in your application registered with the Rural Payments service?')
+      await page.getByRole('radio', { name: 'No' }).click()
+      await page.getByRole('button', { name: 'Continue' }).click()
+
+      await expect(page).toHaveURL(/\/woodland\/exit-eligibility-land-registered/)
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('All the land in your application must be registered with the Rural Payments service')
+      await page.getByRole('link', { name: 'Back' }).click()
+
+      await expect(page).toHaveURL(/\/woodland\/eligibility-land-registered/)
       await page.getByRole('radio', { name: 'Yes' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
-    await test.step('eligibility-management-control', async () => {
+    await test.step('eligibility-management-control -> eligibility-tenant', async () => {
       await expect(page).toHaveURL(/\/woodland\/eligibility-management-control/)
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Will you have management control for the duration of the agreement and, where applicable, the durability period?')
       await page.getByRole('radio', { name: 'Yes' }).click()
@@ -71,6 +88,62 @@ test.describe('Woodland Management Plan application', () => {
     await test.step('eligibility-tenant', async () => {
       await expect(page).toHaveURL(/\/woodland\/eligibility-tenant/)
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Are you a tenant of a public body?')
+      await page.getByRole('link', { name: 'Back' }).click()
+    })
+
+    await test.step('eligibility-management-control -> eligibility-countersignature', async () => {
+      await expect(page).toHaveURL(/\/woodland\/eligibility-management-control/)
+      await page.getByRole('radio', { name: 'No' }).click()
+      await page.getByRole('button', { name: 'Continue' }).click()
+    })
+
+    await test.step('eligibility-countersignature', async () => {
+      await expect(page).toHaveURL(/\/woodland\/eligibility-countersignature/)
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Have you got the countersignature of your landlord?')
+      await page.getByRole('radio', { name: 'No' }).click()
+      await page.getByRole('button', { name: 'Continue' }).click()
+
+      await expect(page).toHaveURL(/\/woodland\/exit-eligibility-countersignature/)
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('You must get your landlord\'s countersignature')
+      await page.getByRole('link', { name: 'Back' }).click()
+
+      await expect(page).toHaveURL(/\/woodland\/eligibility-countersignature/)
+      await page.getByRole('radio', { name: 'Yes' }).click()
+      await page.getByRole('button', { name: 'Continue' }).click()
+    })
+
+    await test.step('eligibility-tenant -> eligibility-grazing-rights', async () => {
+      await expect(page).toHaveURL(/\/woodland\/eligibility-tenant/)
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Are you a tenant of a public body?')
+      await page.getByRole('radio', { name: 'No' }).click()
+      await page.getByRole('button', { name: 'Continue' }).click()
+
+    })
+
+    await test.step('eligibility-grazing-rights', async () => {
+      await expect(page).toHaveURL(/\/woodland\/eligibility-grazing-rights/)
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Are you applying for land covered by common or shared grazing rights?')
+      await page.getByRole('link', { name: 'Back' }).click()
+    })
+
+    await test.step('eligibility-tenant -> eligibility-tenant-obligations', async () => {
+      await expect(page).toHaveURL(/\/woodland\/eligibility-tenant/)
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Are you a tenant of a public body?')
+      await page.getByRole('radio', { name: 'Yes' }).click()
+      await page.getByRole('button', { name: 'Continue' }).click()
+    })
+
+    await test.step('eligibility-tenant-obligations', async () => {
+      await expect(page).toHaveURL(/\/woodland\/eligibility-tenant-obligations/)
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Are the proposed works a requirement of your tenancy or any other legally binding obligation?')
+      await page.getByRole('radio', { name: 'Yes' }).click()
+      await page.getByRole('button', { name: 'Continue' }).click()
+
+      await expect(page).toHaveURL(/\/woodland\/exit-eligibility-tenant-obligations/)
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('You cannot get a WMP grant for any proposed works which are a requirement of your tenancy or any other legally binding obligation')
+      await page.getByRole('link', { name: 'Back' }).click()
+
+      await expect(page).toHaveURL(/\/woodland\/eligibility-tenant-obligations/)
       await page.getByRole('radio', { name: 'No' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
     })
@@ -82,7 +155,20 @@ test.describe('Woodland Management Plan application', () => {
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
-    await test.step('eligibility-valid-wmp', async () => {
+    await test.step('eligibility-valid-wmp -> eligibility-higher-tier', async () => {
+      await expect(page).toHaveURL(/\/woodland\/eligibility-valid-wmp/)
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Do you already have any valid WMPs on any land in your application?')
+      await page.getByRole('radio', { name: 'No' }).click()
+      await page.getByRole('button', { name: 'Continue' }).click()
+    })
+
+    await test.step('eligibility-higher-tier', async () => {
+      await expect(page).toHaveURL(/\/woodland\/eligibility-higher-tier/)
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Do you intend to apply for a Countryside Stewardship Higher Tier (CSHT) agreement if your WMP is approved?')
+      await page.getByRole('link', { name: 'Back' }).click()
+    })
+
+    await test.step('eligibility-valid-wmp -> eligibility-wmp-agreement', async () => {
       await expect(page).toHaveURL(/\/woodland\/eligibility-valid-wmp/)
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Do you already have any valid WMPs on any land in your application?')
       await page.getByRole('radio', { name: 'Yes' }).click()
@@ -92,7 +178,7 @@ test.describe('Woodland Management Plan application', () => {
     await test.step('eligibility-wmp-agreement', async () => {
       await expect(page).toHaveURL(/\/woodland\/eligibility-wmp-agreement/)
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Enter the agreement number for any valid WMPs')
-      await page.getByRole('textbox').fill('WMP-12345')
+      await page.getByRole('textbox').fill('WMP-12345, WMP-23456')
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
@@ -163,7 +249,7 @@ test.describe('Woodland Management Plan application', () => {
     await test.step('which-forestry-commission-team', async () => {
       await expect(page).toHaveURL(/\/woodland\/which-forestry-commission-team/)
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Which Forestry Commission team will be advising you?')
-      await page.getByRole('radio', { name: /east and east midlands/i }).click()
+      await page.getByRole('radio', { name: 'East and East Midlands' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
