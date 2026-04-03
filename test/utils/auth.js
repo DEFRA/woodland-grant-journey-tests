@@ -9,7 +9,7 @@ import { expect } from '@playwright/test'
  * @param {import('@playwright/test').Page} page
  * @param {string} crn
  */
-export async function login(page, crn) {
+export async function authenticate(page, crn) {
   await page.goto('/woodland').catch(() => {})
 
   const crnInput = page.locator('input#crn')

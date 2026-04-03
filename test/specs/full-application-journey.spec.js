@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { login } from '../utils/auth.js'
+import { authenticate } from '../utils/auth.js'
 import { clearApplicationState } from '../utils/backend.js'
 
 const CRN = '1100943757'
@@ -11,7 +11,9 @@ test.describe('Woodland Management Plan application', () => {
   })
 
   test('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
-    await login(page, CRN)
+    await test.step('authentication', async () => {
+      await authenticate(page, CRN)
+    })
 
     await test.step('start', async () => {
       await expect(page).toHaveURL(/\/woodland\/start/)
