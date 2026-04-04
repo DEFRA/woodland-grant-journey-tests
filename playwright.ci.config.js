@@ -2,6 +2,7 @@ import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
   testDir: './test/specs',
+  timeout: 60_000,
   testMatch: '**/*.spec.js',
   fullyParallel: false,
   workers: parseInt(process.env.MAX_INSTANCES) || 1,

@@ -307,16 +307,16 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page.locator('.govuk-panel__body')).toContainText(/WMP-[A-Z0-9]+-[A-Z0-9]+/)
     })
   })
+})
 
-  async function assertTaskStatuses(page, sections) {
-    for (const [heading, tasks] of Object.entries(sections)) {
-      const section = page.locator('.govuk-task-list', {
-        has: page.locator('xpath=preceding-sibling::h2', { hasText: heading }),
-      })
-      for (const { name, status } of tasks) {
-        const item = section.locator('.govuk-task-list__item', { hasText: name })
-        await expect(item.locator('.govuk-task-list__status')).toContainText(status)
-      }
+async function assertTaskStatuses(page, sections) {
+  for (const [heading, tasks] of Object.entries(sections)) {
+    const section = page.locator('.govuk-task-list', {
+      has: page.locator('xpath=preceding-sibling::h2', { hasText: heading }),
+    })
+    for (const { name, status } of tasks) {
+      const item = section.locator('.govuk-task-list__item', { hasText: name })
+      await expect(item.locator('.govuk-task-list__status')).toContainText(status)
     }
   }
-})
+}

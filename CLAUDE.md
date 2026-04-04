@@ -10,6 +10,8 @@ Playwright journey test suite for the Woodland Grant service, designed to run on
 ## Project policies
 
 - **JavaScript only** — no TypeScript. Defra policy.
+- **No assertions in page objects** — page objects encapsulate navigation and interaction only. Assertions belong in the spec.
+- **Helper functions at the bottom of the file** — any file-scoped helper functions (e.g. `assertTaskStatuses`) must be declared after the `test.describe` block, not before.
 
 ## Modes of running
 
@@ -62,9 +64,24 @@ docker build . --platform=linux/amd64
 test/
   utils/
     auth.js              # login() helper — handles OIDC flow
+    gas.js               # MockServer wrapper for GAS interactions
   specs/
-    happy-path.spec.js   # Full WMP happy path journey
+    application-journey.spec.js    # Full WMP happy path journey
+    application-lifecycle.spec.js  # Submit → amend → offer → withdraw (@ci only)
 ```
+
+### GAS (Grant Application Service)
+
+`grants-ui` submits applications to an external service called GAS. In CI, GAS is replaced by a **MockServer** instance, which is why tests that interact with GAS are tagged `@ci` only.
+
+The `test/utils/gas.js` helper wraps `mockserver-client` and provides:
+
+- `setDefaultStatusQuery404Response()` — catch-all 404 for status queries; called in `beforeEach`
+- `setStatusQueryResponse(referenceNumber, gasStatus)` — mock a status query response
+- `getApplicationSubmission(referenceNumber)` — retrieve the recorded POST request from MockServer for assertions
+- `clearExpectation(expectationId)` — clean up; called in `afterEach` for all IDs accumulated during the test
+
+**Env vars required:** `MOCKSERVER_HOST`, `MOCKSERVER_PORT`. These are set by the CI environment. Tests using GAS are tagged `@ci` only, so MockServer is always available when these tests run.
 
 ### Authentication
 

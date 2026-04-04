@@ -9,12 +9,13 @@
   "license": "OGL-UK-3.0",
   "scripts": {
     "test": "playwright test --config=playwright.config.js --grep @cdp",
-    "test:local": "playwright test --config=playwright.local.config.js",
+    "test:local": "playwright test --config=playwright.local.config.js --grep @runme",
     "test:ci": "playwright test --config=playwright.ci.config.js --grep @ci",
     "report:publish": "./bin/publish-tests.sh"
   },
   "dependencies": {
     "@playwright/test": "1.52.0",
-    "jsonwebtoken": "9.0.3"
+    "jsonwebtoken": "9.0.3",
+    "mockserver-client": "5.15.0"
   }
 }

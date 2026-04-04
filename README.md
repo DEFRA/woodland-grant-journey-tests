@@ -57,7 +57,7 @@ npm test
 ```
 
 - Runs against the CDP environment specified by the `ENVIRONMENT` env var
-- Base URL pattern: `https://woodland-grant-journey-tests.${ENVIRONMENT}.cdp-int.defra.cloud`
+- Base URL pattern: `https://grants-ui.${ENVIRONMENT}.cdp-int.defra.cloud`
 - Triggered via the CDP Portal under Test Suites
 - Publishes an HTML report to S3
 
@@ -76,7 +76,8 @@ npm run test:ci
 
 | Spec | Description |
 |---|---|
-| `happy-path.spec.js` | Full eligible WMP application: sign in → start → check details → eligibility → woodland details → summary → declaration → confirmation |
+| `application-journey.spec.js` | Full eligible WMP application: sign in → start → check details → eligibility → woodland details → summary → declaration → confirmation |
+| `application-lifecycle.spec.js` | Full GAS lifecycle: submit → amend → offer sent → withdrawn (`@ci` only) |
 
 ## Project Structure
 
@@ -84,9 +85,7 @@ npm run test:ci
 woodland-grant-journey-tests/
 ├── test/
 │   ├── utils/
-│   │   └── auth.js             # login() helper for OIDC flow
 │   └── specs/
-│       └── happy-path.spec.js
 ├── playwright.config.js        # CDP Portal config
 ├── playwright.local.config.js  # Local development config
 └── playwright.ci.config.js     # CI pipeline config
