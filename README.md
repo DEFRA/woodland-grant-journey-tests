@@ -17,7 +17,6 @@ This test suite provides journey testing coverage for:
 
 - Node.js `>=22.13.1` (check with `node --version`)
 - npm (comes with Node.js)
-- Access to a running instance of the service under test (local or CDP)
 
 ## Quick Start
 
@@ -70,13 +69,13 @@ npm run test:ci
 - Runs against the URL specified by the `BASE_URL` env var
 - Used in the `grants-ui` GitHub Actions CI pipeline
 - Automated execution on creating and updating a `grants-ui` PR
-- Can also be run locally using the [grants-ui compose file](https://github.com/DEFRA/grants-ui/blob/main/compose.tests.yml)
+- No report generated, console logging only
 
 ## Test Coverage
 
 | Spec | Description |
 |---|---|
-| `application-journey.spec.js` | Full eligible WMP application: sign in → start → check details → eligibility → woodland details → summary → declaration → confirmation |
+| `application-journey.spec.js` | Full eligible WMP application: sign in → start → check details → eligibility → woodland details → summary → declaration → confirmation. Includes WCAG 2.x A/AA axe-core accessibility checks on every page. |
 | `application-lifecycle.spec.js` | Full GAS lifecycle: submit → amend → offer sent → withdrawn (`@ci` only) |
 
 ## Project Structure
@@ -93,7 +92,7 @@ woodland-grant-journey-tests/
 
 ## Authentication
 
-Journey tests authenticate via the `Defra ID` OIDC provider for the environment in use (real instance or stub). The `login()` helper handles the full OIDC redirect flow automatically.
+Journey tests authenticate via the `Defra ID` OIDC provider for the environment in use (real instance or stub). The `authenticate()` helper function handles the full OIDC redirect flow automatically.
 
 **Password:** set via `DEFRA_ID_USER_PASSWORD` env var (default: `x`)
 
