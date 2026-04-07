@@ -19,7 +19,7 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 WORKDIR /app
 
 COPY . .
-RUN npm install
+RUN npm ci
 RUN npx playwright install --with-deps chromium
 
 ENTRYPOINT [ "./entrypoint.sh" ]
