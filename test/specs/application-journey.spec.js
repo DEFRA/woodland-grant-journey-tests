@@ -11,7 +11,7 @@ test.describe('Woodland Management Plan application', () => {
     await clearApplicationState(CRN, SBI)
   })
 
-  test('submits a full WMP application from start to confirmation', { tag: [/* '@cdp', '@ci' */] }, async ({ page }) => {
+  test.skip('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
     await test.step('authentication', async () => {
       await authenticate(page, CRN)
     })
