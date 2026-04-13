@@ -21,7 +21,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
     expectationIds.length = 0
   })
 
-  test.skip('submits, amends, receives an offer, and is withdrawn', { tag: ['@ci'] }, async ({ page: initialPage, browser }) => {
+  test('submits, amends, receives an offer, and is withdrawn', { tag: ['@ci'] }, async ({ page: initialPage, browser }) => {
     let page = initialPage
     let referenceNumber
 
@@ -82,8 +82,8 @@ test.describe('Woodland Management Plan application lifecycle', () => {
 
       // total-area-of-woodland
       await expect(page).toHaveURL('/woodland/total-area-of-woodland')
-      await page.getByLabel('Enter total area of woodland over 10 years old').fill('1.02')
-      await page.getByLabel('Enter total area of newly planted woodland under 10 years old').fill('0.68')
+      await page.getByLabel('Enter total area of woodland over 10 years old').fill('60')
+      await page.getByLabel('Enter total area of newly planted woodland under 10 years old').fill('8.0498')
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // centre-of-woodland
@@ -161,8 +161,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
         ],
         'About your woodland': [
           { name: 'Select land parcels', status: 'Completed' },
-          { name: 'Land over 10 years old', status: 'Completed' },
-          { name: 'Land under 10 years old', status: 'Completed' },
+          { name: 'Total area of woodland', status: 'Completed' },
           { name: 'Centre of your woodland', status: 'Completed' },
           { name: 'Forestry commission team', status: 'Completed' },
         ],

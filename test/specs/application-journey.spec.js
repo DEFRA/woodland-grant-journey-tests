@@ -11,7 +11,7 @@ test.describe('Woodland Management Plan application', () => {
     await clearApplicationState(CRN, SBI)
   })
 
-  test.skip('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
+  test('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
     await test.step('authentication', async () => {
       await authenticate(page, CRN)
     })
@@ -56,8 +56,7 @@ test.describe('Woodland Management Plan application', () => {
         ],
         'About your woodland': [
           { name: 'Select land parcels', status: 'Cannot start yet' },
-          { name: 'Land over 10 years old', status: 'Cannot start yet' },
-          { name: 'Land under 10 years old', status: 'Cannot start yet' },
+          { name: 'Total area of woodland', status: 'Cannot start yet' },
           { name: 'Centre of your woodland', status: 'Cannot start yet' },
           { name: 'Forestry commission team', status: 'Cannot start yet' },
         ],
@@ -223,8 +222,7 @@ test.describe('Woodland Management Plan application', () => {
         ],
         'About your woodland': [
           { name: 'Select land parcels', status: 'Not started' },
-          { name: 'Land over 10 years old', status: 'Cannot start yet' },
-          { name: 'Land under 10 years old', status: 'Cannot start yet' },
+          { name: 'Total area of woodland', status: 'Cannot start yet' },
           { name: 'Centre of your woodland', status: 'Cannot start yet' },
           { name: 'Forestry commission team', status: 'Cannot start yet' },
         ],
@@ -242,17 +240,17 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Select all the eligible land parcels for the location of your woodland')
       await analyzeAccessibility(page)
       await page.getByRole('checkbox', { name: 'SD6351 8781' }).check()
+      await page.getByRole('checkbox', { name: 'SD6352 8774' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
     await test.step('total-area-of-woodland', async () => {
       await expect(page).toHaveURL('/woodland/total-area-of-woodland')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Enter total area of woodland over 10 years old')
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Enter total area of woodland in your application')
       await analyzeAccessibility(page)
-
-      await page.getByLabel('Enter total area of woodland over 10 years old').fill('1.02')
-      await page.getByLabel('Enter total area of newly planted woodland under 10 years old').fill('0.68')
-
+      await expect(page.locator('.govuk-inset-text')).toContainText('The total area of your selected land parcels is 79.1504 ha')
+      await page.getByLabel('Enter total area of woodland over 10 years old').fill('40')
+      await page.getByLabel('Enter total area of newly planted woodland under 10 years old').fill('39.1504')
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
@@ -286,8 +284,7 @@ test.describe('Woodland Management Plan application', () => {
         ],
         'About your woodland': [
           { name: 'Select land parcels', status: 'Completed' },
-          { name: 'Land over 10 years old', status: 'Completed' },
-          { name: 'Land under 10 years old', status: 'Completed' },
+          { name: 'Total area of woodland', status: 'Completed' },
           { name: 'Centre of your woodland', status: 'Completed' },
           { name: 'Forestry commission team', status: 'Completed' },
         ],
