@@ -7,7 +7,7 @@ process.env.BASE_BACKEND_URL = 'http://localhost:3001'
 
 export default defineConfig({
   testDir: './test/specs',
-  timeout: 60_000,
+  timeout: 120_000,
   testMatch: '**/*.spec.js',
   fullyParallel: false,
   workers: 1,

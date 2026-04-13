@@ -21,7 +21,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
     expectationIds.length = 0
   })
 
-  test.skip('submits, amends, receives an offer, and is withdrawn', { tag: ['@ci'] }, async ({ page: initialPage, browser }) => {
+  test('submits, amends, receives an offer, and is withdrawn', { tag: ['@ci'] }, async ({ page: initialPage, browser }) => {
     let page = initialPage
     let referenceNumber
 
@@ -29,95 +29,95 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await authenticate(page, CRN)
 
       // start
-      await expect(page).toHaveURL(/\/woodland\/start/)
+      await expect(page).toHaveURL('/woodland/start')
       await page.getByRole('button', { name: 'Start now' }).click()
 
       // check-details
-      await expect(page).toHaveURL(/\/woodland\/check-details/)
+      await expect(page).toHaveURL('/woodland/check-details')
       await page.getByRole('radio', { name: 'Yes' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // tasks
-      await expect(page).toHaveURL(/\/woodland\/tasks/)
-      await page.getByRole('link', { name: /land registration/i }).click()
+      await expect(page).toHaveURL('/woodland/tasks')
+      await page.getByRole('link', { name: 'Land registration' }).click()
 
       // eligibility-land-registered
-      await expect(page).toHaveURL(/\/woodland\/eligibility-land-registered/)
+      await expect(page).toHaveURL('/woodland/eligibility-land-registered')
       await page.getByRole('radio', { name: 'Yes' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // eligibility-management-control
-      await expect(page).toHaveURL(/\/woodland\/eligibility-management-control/)
+      await expect(page).toHaveURL('/woodland/eligibility-management-control')
       await page.getByRole('radio', { name: 'Yes' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // eligibility-tenant
-      await expect(page).toHaveURL(/\/woodland\/eligibility-tenant/)
+      await expect(page).toHaveURL('/woodland/eligibility-tenant')
       await page.getByRole('radio', { name: 'No' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // eligibility-grazing-rights
-      await expect(page).toHaveURL(/\/woodland\/eligibility-grazing-rights/)
+      await expect(page).toHaveURL('/woodland/eligibility-grazing-rights')
       await page.getByRole('radio', { name: 'No' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // eligibility-valid-wmp
-      await expect(page).toHaveURL(/\/woodland\/eligibility-valid-wmp/)
+      await expect(page).toHaveURL('/woodland/eligibility-valid-wmp')
       await page.getByRole('radio', { name: 'No' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // eligibility-higher-tier
-      await expect(page).toHaveURL(/\/woodland\/eligibility-higher-tier/)
+      await expect(page).toHaveURL('/woodland/eligibility-higher-tier')
       await page.getByRole('radio', { name: 'Yes' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // tasks
-      await expect(page).toHaveURL(/\/woodland\/tasks/)
-      await page.getByRole('link', { name: /Total area of land parcels/ }).click()
+      await expect(page).toHaveURL('/woodland/tasks')
+      await page.getByRole('link', { name: 'Select land parcels' }).click()
 
-      // total-area-of-land-parcels
-      await expect(page).toHaveURL(/\/woodland\/total-area-of-land-parcels/)
-      await page.getByRole('textbox').fill('50')
+      // land-parcels
+      await expect(page).toHaveURL('/woodland/land-parcels')
+      await page.getByRole('checkbox', { name: 'SD6351 8781' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // total-area-of-land-over-10-years-old
-      await expect(page).toHaveURL(/\/woodland\/total-area-of-land-over-10-years-old/)
-      await page.getByRole('textbox').fill('30')
+      await expect(page).toHaveURL('/woodland/total-area-of-land-over-10-years-old')
+      await page.getByRole('textbox').fill('60')
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // total-area-of-land-under-10-years-old
-      await expect(page).toHaveURL(/\/woodland\/total-area-of-land-under-10-years-old/)
-      await page.getByRole('textbox').fill('10')
+      await expect(page).toHaveURL('/woodland/total-area-of-land-under-10-years-old')
+      await page.getByRole('textbox').fill('8.0498')
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // centre-of-woodland
-      await expect(page).toHaveURL(/\/woodland\/centre-of-woodland/)
+      await expect(page).toHaveURL('/woodland/centre-of-woodland')
       await page.getByRole('textbox').fill('SP 1234 5678')
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // which-forestry-commission-team
-      await expect(page).toHaveURL(/\/woodland\/which-forestry-commission-team/)
+      await expect(page).toHaveURL('/woodland/which-forestry-commission-team')
       await page.getByRole('radio', { name: 'East and East Midlands' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // tasks
-      await expect(page).toHaveURL(/\/woodland\/tasks/)
-      await page.getByRole('link', { name: /Check your answers/i }).click()
+      await expect(page).toHaveURL('/woodland/tasks')
+      await page.getByRole('link', { name: 'Check your answers' }).click()
 
       // summary
-      await expect(page).toHaveURL(/\/woodland\/summary/)
+      await expect(page).toHaveURL('/woodland/summary')
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // potential-funding
-      await expect(page).toHaveURL(/\/woodland\/potential-funding/)
+      await expect(page).toHaveURL('/woodland/potential-funding')
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // declaration
-      await expect(page).toHaveURL(/\/woodland\/declaration/)
+      await expect(page).toHaveURL('/woodland/declaration')
       await page.getByRole('button', { name: 'Confirm and send' }).click()
 
       // confirmation
-      await expect(page).toHaveURL(/\/woodland\/confirmation/)
+      await expect(page).toHaveURL('/woodland/confirmation')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Application submitted')
       await expect(page.locator('.govuk-panel__body')).toContainText(/WMP-[A-Z0-9]+-[A-Z0-9]+/)
       referenceNumber = await page.locator('.govuk-panel__body strong').textContent()
@@ -141,7 +141,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       const context = await browser.newContext()
       page = await context.newPage()
       await authenticate(page, CRN)
-      await expect(page).toHaveURL(/\/woodland\/confirmation/)
+      await expect(page).toHaveURL('/woodland/confirmation')
     })
 
     await test.step('GAS status is now APPLICATION_AMEND', async () => {
@@ -153,7 +153,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       const context = await browser.newContext()
       page = await context.newPage()
       await authenticate(page, CRN)
-      await expect(page).toHaveURL(/\/woodland\/tasks/)
+      await expect(page).toHaveURL('/woodland/tasks')
       await assertTaskStatuses(page, {
         'Check your eligibility': [
           { name: 'Land registration', status: 'Completed' },
@@ -164,7 +164,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
           { name: 'Higher Tier intention', status: 'Completed' },
         ],
         'About your woodland': [
-          { name: 'Total area of land parcels', status: 'Completed' },
+          { name: 'Select land parcels', status: 'Completed' },
           { name: 'Land over 10 years old', status: 'Completed' },
           { name: 'Land under 10 years old', status: 'Completed' },
           { name: 'Centre of your woodland', status: 'Completed' },
@@ -179,31 +179,31 @@ test.describe('Woodland Management Plan application lifecycle', () => {
     })
 
     await test.step('amend application and resubmit', async () => {
-      await page.getByRole('link', { name: /Higher Tier intention/i }).click()
+      await page.getByRole('link', { name: 'Higher Tier intention' }).click()
 
       // eligibility-higher-tier
-      await expect(page).toHaveURL(/\/woodland\/eligibility-higher-tier/)
+      await expect(page).toHaveURL('/woodland/eligibility-higher-tier')
       await page.getByRole('radio', { name: 'No' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // tasks
-      await expect(page).toHaveURL(/\/woodland\/tasks/)
-      await page.getByRole('link', { name: /Check your answers/i }).click()
+      await expect(page).toHaveURL('/woodland/tasks')
+      await page.getByRole('link', { name: 'Check your answers' }).click()
 
       // summary
-      await expect(page).toHaveURL(/\/woodland\/summary/)
+      await expect(page).toHaveURL('/woodland/summary')
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // potential-funding
-      await expect(page).toHaveURL(/\/woodland\/potential-funding/)
+      await expect(page).toHaveURL('/woodland/potential-funding')
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // declaration
-      await expect(page).toHaveURL(/\/woodland\/declaration/)
+      await expect(page).toHaveURL('/woodland/declaration')
       await page.getByRole('button', { name: 'Confirm and send' }).click()
 
       // confirmation
-      await expect(page).toHaveURL(/\/woodland\/confirmation/)
+      await expect(page).toHaveURL('/woodland/confirmation')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Application submitted')
       await expect(page.locator('.govuk-panel__body')).toContainText(/WMP-[A-Z0-9]+-[A-Z0-9]+/)
       referenceNumber = await page.locator('.govuk-panel__body strong').textContent()
@@ -230,7 +230,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       const context = await browser.newContext()
       page = await context.newPage()
       await authenticate(page, CRN)
-      await expect(page).toHaveURL(/\/woodland\/start/)
+      await expect(page).toHaveURL('/woodland/start')
     })
   })
 })
