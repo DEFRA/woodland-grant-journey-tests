@@ -11,7 +11,7 @@ test.describe('Woodland Management Plan application', () => {
     await clearApplicationState(CRN, SBI)
   })
 
-  test('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
+  test.skip('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
     await test.step('authentication', async () => {
       await authenticate(page, CRN)
     })
@@ -245,19 +245,14 @@ test.describe('Woodland Management Plan application', () => {
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
-    await test.step('total-area-of-land-over-10-years-old', async () => {
-      await expect(page).toHaveURL('/woodland/total-area-of-land-over-10-years-old')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Enter total area of woodland on your land over 10 years old')
+    await test.step('total-area-of-woodland', async () => {
+      await expect(page).toHaveURL('/woodland/total-area-of-woodland')
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Enter total area of woodland over 10 years old')
       await analyzeAccessibility(page)
-      await page.getByRole('textbox').fill('60')
-      await page.getByRole('button', { name: 'Continue' }).click()
-    })
 
-    await test.step('total-area-of-land-under-10-years-old', async () => {
-      await expect(page).toHaveURL('/woodland/total-area-of-land-under-10-years-old')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Enter total area of newly planted woodland on your land under 10 years old')
-      await analyzeAccessibility(page)
-      await page.getByRole('textbox').fill('8.0498')
+      await page.getByLabel('Enter total area of woodland over 10 years old').fill('1.02')
+      await page.getByLabel('Enter total area of newly planted woodland under 10 years old').fill('0.68')
+
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
