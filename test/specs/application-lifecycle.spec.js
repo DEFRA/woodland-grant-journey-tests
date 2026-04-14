@@ -21,7 +21,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
     expectationIds.length = 0
   })
 
-  test.skip('submits, amends, receives an offer, and is withdrawn', { tag: ['@ci'] }, async ({ page: initialPage, browser }) => {
+  test('submits, amends, receives an offer, and is withdrawn', { tag: ['@ci'] }, async ({ page: initialPage, browser }) => {
     let page = initialPage
     let referenceNumber
 
