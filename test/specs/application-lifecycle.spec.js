@@ -161,7 +161,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
         ],
         'About your woodland': [
           { name: 'Select land parcels', status: 'Completed' },
-          { name: 'Total area of woodland', status: 'Completed' },
+          { name: 'Woodland over 10 years old', status: 'Completed' },
           { name: 'Centre of your woodland', status: 'Completed' },
           { name: 'Forestry commission team', status: 'Completed' },
         ],

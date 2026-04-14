@@ -56,7 +56,7 @@ test.describe('Woodland Management Plan application', () => {
         ],
         'About your woodland': [
           { name: 'Select land parcels', status: 'Cannot start yet' },
-          { name: 'Total area of woodland', status: 'Cannot start yet' },
+          { name: 'Woodland over 10 years old', status: 'Cannot start yet' },
           { name: 'Centre of your woodland', status: 'Cannot start yet' },
           { name: 'Forestry commission team', status: 'Cannot start yet' },
         ],
@@ -222,7 +222,7 @@ test.describe('Woodland Management Plan application', () => {
         ],
         'About your woodland': [
           { name: 'Select land parcels', status: 'Not started' },
-          { name: 'Total area of woodland', status: 'Cannot start yet' },
+          { name: 'Woodland over 10 years old', status: 'Cannot start yet' },
           { name: 'Centre of your woodland', status: 'Cannot start yet' },
           { name: 'Forestry commission team', status: 'Cannot start yet' },
         ],
@@ -284,7 +284,7 @@ test.describe('Woodland Management Plan application', () => {
         ],
         'About your woodland': [
           { name: 'Select land parcels', status: 'Completed' },
-          { name: 'Total area of woodland', status: 'Completed' },
+          { name: 'Woodland over 10 years old', status: 'Completed' },
           { name: 'Centre of your woodland', status: 'Completed' },
           { name: 'Forestry commission team', status: 'Completed' },
         ],
