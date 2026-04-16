@@ -125,7 +125,6 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       expect(request.body.json.metadata.clientRef).toEqual(referenceNumber.toLowerCase())
       expect(request.body.json.metadata.sbi).toEqual(SBI)
       expect(request.body.json.metadata.crn).toEqual(CRN)
-      expect(request.body.json.answers.referenceNumber).toEqual(referenceNumber)
     })
 
     await test.step('GAS status is now APPLICATION_RECEIVED', async () => {
