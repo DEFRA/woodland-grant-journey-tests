@@ -21,16 +21,13 @@ test.describe('Woodland Management Plan application lifecycle', () => {
     expectationIds.length = 0
   })
 
-  test.skip('submits, amends, receives an offer, and is withdrawn', { tag: ['@ci'] }, async ({ page: initialPage, browser }) => {
+  test('submits, amends, receives an offer, and is withdrawn', { tag: ['@ci'] }, async ({ page: initialPage, browser }) => {
     let page = initialPage
     let referenceNumber
 
     await test.step('submit application', async () => {
+      await page.goto('/woodland')
       await authenticate(page, CRN)
-
-      // start
-      await expect(page).toHaveURL('/woodland/start')
-      await page.getByRole('button', { name: 'Start now' }).click()
 
       // check-details
       await expect(page).toHaveURL('/woodland/check-details')
@@ -135,6 +132,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await page.context().close()
       const context = await browser.newContext()
       page = await context.newPage()
+      await page.goto('/woodland')
       await authenticate(page, CRN)
       await expect(page).toHaveURL('/woodland/confirmation')
     })
@@ -147,6 +145,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await page.context().close()
       const context = await browser.newContext()
       page = await context.newPage()
+      await page.goto('/woodland')
       await authenticate(page, CRN)
       await expect(page).toHaveURL('/woodland/tasks')
       await assertTaskStatuses(page, {
@@ -211,6 +210,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await page.context().close()
       const context = await browser.newContext()
       page = await context.newPage()
+      await page.goto('/woodland')
       await authenticate(page, CRN)
       await expect(page).toHaveURL(/\/agreement/)
     })
@@ -219,12 +219,13 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       expectationIds.push(await setStatusQueryResponse(referenceNumber, 'APPLICATION_WITHDRAWN'))
     })
 
-    await test.step('reopen browser and are redirected to /start', async () => {
+    await test.step('reopen browser and are redirected to /check-details', async () => {
       await page.context().close()
       const context = await browser.newContext()
       page = await context.newPage()
+      await page.goto('/woodland')
       await authenticate(page, CRN)
-      await expect(page).toHaveURL('/woodland/start')
+      await expect(page).toHaveURL('/woodland/check-details')
     })
   })
 })
