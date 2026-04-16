@@ -11,16 +11,10 @@ test.describe('Woodland Management Plan application', () => {
     await clearApplicationState(CRN, SBI)
   })
 
-  test.skip('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
+  test('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
     await test.step('authentication', async () => {
+      await page.goto('/woodland')
       await authenticate(page, CRN)
-    })
-
-    await test.step('start', async () => {
-      await expect(page).toHaveURL('/woodland/start')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Apply for a Woodland Management Plan grant')
-      await analyzeAccessibility(page)
-      await page.getByRole('button', { name: 'Start now' }).click()
     })
 
     await test.step('check-details', async () => {
@@ -30,10 +24,10 @@ test.describe('Woodland Management Plan application', () => {
       await page.getByRole('radio', { name: 'No' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
 
-      await expect(page).toHaveURL('/woodland/check-details')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Contact the RPA to update your details')
+      await expect(page).toHaveURL('/woodland/update-details')
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Update your details')
       await analyzeAccessibility(page)
-      await page.getByRole('button', { name: 'Continue' }).click()
+      await page.getByRole('link', { name: 'Back' }).click()
 
       await expect(page).toHaveURL('/woodland/check-details')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Confirm your details')
