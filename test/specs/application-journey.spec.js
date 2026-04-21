@@ -11,7 +11,7 @@ test.describe('Woodland Management Plan application', () => {
     await clearApplicationState(CRN, SBI)
   })
 
-  test('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
+  test('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci', '@runme'] }, async ({ page }) => {
     await test.step('authentication', async () => {
       await page.goto('/woodland')
       await authenticate(page, CRN)
@@ -233,6 +233,13 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page).toHaveURL('/woodland/land-parcels')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Select all the eligible land parcels for the location of your woodland')
       await analyzeAccessibility(page)
+      // SD6252 7537 is under 0.5ha — selecting it alone should fail validation
+      await page.getByRole('checkbox', { name: 'SD6252 7537' }).check()
+      await page.getByRole('button', { name: 'Continue' }).click()
+
+      await expect(page).toHaveURL('/woodland/land-parcels')
+      await expect(page.locator('.govuk-error-summary')).toContainText('Total area of selected land parcels must be more than 0.5ha')
+
       await page.getByRole('checkbox', { name: 'SD6351 8781' }).check()
       await page.getByRole('checkbox', { name: 'SD6352 8774' }).check()
       await page.getByRole('button', { name: 'Continue' }).click()
@@ -242,9 +249,9 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page).toHaveURL('/woodland/total-area-of-woodland')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Enter total area of woodland in your application')
       await analyzeAccessibility(page)
-      await expect(page.locator('.govuk-inset-text')).toContainText('The total area of your selected land parcels is 79.1504 ha')
-      await page.getByLabel('Enter total area of woodland over 10 years old').fill('40')
-      await page.getByLabel('Enter total area of newly planted woodland under 10 years old').fill('39.1504')
+      await expect(page.locator('.govuk-inset-text')).toContainText('The total area of your selected land parcels is 79.4865 ha')
+      await page.getByLabel('Enter total area of woodland over 10 years old').fill('40.25')
+      await page.getByLabel('Enter total area of newly planted woodland under 10 years old').fill('15.75')
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
