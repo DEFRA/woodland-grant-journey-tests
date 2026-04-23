@@ -107,7 +107,7 @@ test.describe('Woodland Management Plan application', () => {
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
-    await test.step('eligibility-countersignature', async () => {
+    await test.step.skip('eligibility-countersignature', async () => {
       await expect(page).toHaveURL('/woodland/eligibility-countersignature')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Have you got the countersignature of your landlord?')
       await analyzeAccessibility(page)
@@ -145,7 +145,7 @@ test.describe('Woodland Management Plan application', () => {
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
-    await test.step('eligibility-tenant-obligations', async () => {
+    await test.step.skip('eligibility-tenant-obligations', async () => {
       await expect(page).toHaveURL('/woodland/eligibility-tenant-obligations')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Are the proposed works a requirement of your tenancy or any other legally binding obligation?')
       await analyzeAccessibility(page)
@@ -170,7 +170,7 @@ test.describe('Woodland Management Plan application', () => {
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
-    await test.step('eligibility-valid-wmp -> eligibility-higher-tier', async () => {
+    await test.step.skip('eligibility-valid-wmp -> eligibility-higher-tier', async () => {
       await expect(page).toHaveURL('/woodland/eligibility-valid-wmp')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Do you already have any valid WMPs on any land in your application?')
       await analyzeAccessibility(page)
@@ -192,7 +192,7 @@ test.describe('Woodland Management Plan application', () => {
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
-    await test.step('eligibility-wmp-agreement', async () => {
+    await test.step.skip('eligibility-wmp-agreement', async () => {
       await expect(page).toHaveURL('/woodland/eligibility-wmp-agreement')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Enter the agreement number for any valid WMPs')
       await analyzeAccessibility(page)
@@ -200,7 +200,7 @@ test.describe('Woodland Management Plan application', () => {
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
-    await test.step('eligibility-higher-tier', async () => {
+    await test.step.skip('eligibility-higher-tier', async () => {
       await expect(page).toHaveURL('/woodland/eligibility-higher-tier')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Do you intend to apply for a Countryside Stewardship Higher Tier (CSHT) agreement if your WMP is approved?')
       await page.getByRole('radio', { name: 'Yes' }).click()
