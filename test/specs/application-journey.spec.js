@@ -322,7 +322,7 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page).toHaveURL('/woodland/declaration')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Submit your application')
       await analyzeAccessibility(page)
-      await page.getByRole('button', { name: 'Confirm and send' }).click()
+      await page.getByRole('button', { name: 'Confirm and submit' }).click()
     })
 
     await test.step('confirmation', async () => {

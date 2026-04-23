@@ -107,7 +107,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
 
       // declaration
       await expect(page).toHaveURL('/woodland/declaration')
-      await page.getByRole('button', { name: 'Confirm and send' }).click()
+      await page.getByRole('button', { name: 'Confirm and submit' }).click()
 
       // confirmation
       await expect(page).toHaveURL('/woodland/confirmation')
@@ -193,7 +193,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
 
       // declaration
       await expect(page).toHaveURL('/woodland/declaration')
-      await page.getByRole('button', { name: 'Confirm and send' }).click()
+      await page.getByRole('button', { name: 'Confirm and submit' }).click()
 
       // confirmation
       await expect(page).toHaveURL('/woodland/confirmation')
