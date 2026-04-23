@@ -1,10 +1,15 @@
 import { test, expect } from '@playwright/test'
+import Ajv2020 from 'ajv/dist/2020.js'
 import { authenticate } from '../utils/auth.js'
 import { clearApplicationState } from '../utils/backend.js'
 import { analyzeAccessibility } from '../utils/accessibility.js'
+import { getApplicationSubmission } from '../utils/gas.js'
+import gasSchemaFile from '../schemas/gas.schema.json' with { type: 'json' }
 
 const CRN = '1100943757'
 const SBI = '113593357'
+
+const gasAnswersSchema = gasSchemaFile.questions
 
 test.describe('Woodland Management Plan application', () => {
   test.beforeEach(async () => {
@@ -12,6 +17,7 @@ test.describe('Woodland Management Plan application', () => {
   })
 
   test('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci', '@runme'] }, async ({ page }) => {
+    let referenceNumber
     await test.step('authentication', async () => {
       await page.goto('/woodland')
       await authenticate(page, CRN)
@@ -324,7 +330,24 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Application submitted')
       await analyzeAccessibility(page)
       await expect(page.locator('.govuk-panel__body')).toContainText(/WMP-[A-Z0-9]+-[A-Z0-9]+/)
+      referenceNumber = await page.locator('.govuk-panel__body strong').textContent()
     })
+
+    if (process.env.MOCKSERVER_HOST) {
+      await test.step('verify GAS submission', async () => {
+        const request = await getApplicationSubmission(referenceNumber)
+        expect(request).not.toBeNull()
+        expect(request.body.json.metadata.clientRef).toEqual(referenceNumber.toLowerCase())
+        expect(request.body.json.metadata.sbi).toEqual(SBI)
+        expect(request.body.json.metadata.crn).toEqual(CRN)
+        expect(request.body.json.metadata.frn).toBeTruthy()
+
+        const ajv = new Ajv2020({ strict: false })
+        const validate = ajv.compile(gasAnswersSchema)
+        const valid = validate(request.body.json.answers)
+        expect(valid, ajv.errorsText(validate.errors)).toBe(true)
+      })
+    }
   })
 })
 
