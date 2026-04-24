@@ -21,7 +21,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
     expectationIds.length = 0
   })
 
-  test.skip('submits, amends, receives an offer, and is withdrawn', { tag: ['@ci'] }, async ({ page: initialPage, browser }) => {
+  test('submits, amends, receives an offer, and is withdrawn', { tag: ['@ci'] }, async ({ page: initialPage, browser }) => {
     let page = initialPage
     let referenceNumber
 
@@ -70,7 +70,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
 
       // tasks
       await expect(page).toHaveURL('/woodland/tasks')
-      await page.getByRole('link', { name: 'Select land parcels' }).click()
+      await page.getByRole('link', { name: 'Land parcels' }).click()
 
       // land-parcels
       await expect(page).toHaveURL('/woodland/land-parcels')
@@ -86,6 +86,11 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       // centre-of-woodland
       await expect(page).toHaveURL('/woodland/centre-of-woodland')
       await page.getByRole('textbox').fill('SP 1234 5678')
+      await page.getByRole('button', { name: 'Continue' }).click()
+
+      // woodland-name
+      await expect(page).toHaveURL('/woodland/woodland-name')
+      await page.getByRole('textbox').fill('Test Woodland')
       await page.getByRole('button', { name: 'Continue' }).click()
 
       // which-forestry-commission-team
@@ -158,9 +163,10 @@ test.describe('Woodland Management Plan application lifecycle', () => {
           { name: 'Higher Tier intention', status: 'Completed' },
         ],
         'About your woodland': [
-          { name: 'Select land parcels', status: 'Completed' },
+          { name: 'Land parcels', status: 'Completed' },
           { name: 'Woodland over 10 years old', status: 'Completed' },
           { name: 'Centre of your woodland', status: 'Completed' },
+          { name: 'Name of woodland', status: 'Completed' },
           { name: 'Forestry commission team', status: 'Completed' },
         ],
         'Check and submit application': [

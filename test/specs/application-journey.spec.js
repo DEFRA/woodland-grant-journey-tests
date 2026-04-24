@@ -16,7 +16,7 @@ test.describe('Woodland Management Plan application', () => {
     await clearApplicationState(CRN, SBI)
   })
 
-  test.skip('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci', '@runme'] }, async ({ page }) => {
+  test('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
     let referenceNumber
     await test.step('authentication', async () => {
       await page.goto('/woodland')
@@ -55,9 +55,10 @@ test.describe('Woodland Management Plan application', () => {
           { name: 'Higher Tier intention', status: 'Cannot start yet' },
         ],
         'About your woodland': [
-          { name: 'Select land parcels', status: 'Cannot start yet' },
+          { name: 'Land parcels', status: 'Cannot start yet' },
           { name: 'Woodland over 10 years old', status: 'Cannot start yet' },
           { name: 'Centre of your woodland', status: 'Cannot start yet' },
+          { name: 'Name of woodland', status: 'Cannot start yet' },
           { name: 'Forestry commission team', status: 'Cannot start yet' },
         ],
         'Check and submit application': [
@@ -109,7 +110,7 @@ test.describe('Woodland Management Plan application', () => {
 
     await test.step('eligibility-countersignature', async () => {
       await expect(page).toHaveURL('/woodland/eligibility-countersignature')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Have you got the countersignature of your landlord?')
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Have you got the countersignature of the parties who do have management control of the land?')
       await analyzeAccessibility(page)
       await page.getByRole('radio', { name: 'No' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
@@ -147,13 +148,13 @@ test.describe('Woodland Management Plan application', () => {
 
     await test.step('eligibility-tenant-obligations', async () => {
       await expect(page).toHaveURL('/woodland/eligibility-tenant-obligations')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Are the proposed works a requirement of your tenancy or any other legally binding obligation?')
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Is the proposed plan a requirement of your tenancy or any other legally binding obligation?')
       await analyzeAccessibility(page)
       await page.getByRole('radio', { name: 'Yes' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
 
       await expect(page).toHaveURL('/woodland/exit-eligibility-tenant-obligations')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('You cannot get a WMP grant for any proposed works which are a requirement of your tenancy or any other legally binding obligation')
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('You cannot apply for a woodland management plan (WMP) for any work that is a requirement of your tenancy or any other legally binding obligation')
       await analyzeAccessibility(page)
       await page.getByRole('link', { name: 'Back' }).click()
 
@@ -172,7 +173,7 @@ test.describe('Woodland Management Plan application', () => {
 
     await test.step('eligibility-valid-wmp -> eligibility-higher-tier', async () => {
       await expect(page).toHaveURL('/woodland/eligibility-valid-wmp')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Do you already have any valid WMPs on any land in your application?')
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Do you already have any live woodland management plans (WMPs) on any land in your application?')
       await analyzeAccessibility(page)
       await page.getByRole('radio', { name: 'No' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
@@ -180,21 +181,21 @@ test.describe('Woodland Management Plan application', () => {
 
     await test.step('eligibility-higher-tier', async () => {
       await expect(page).toHaveURL('/woodland/eligibility-higher-tier')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Do you intend to apply for a Countryside Stewardship Higher Tier (CSHT) agreement if your WMP is approved?')
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Are you interested in a Countryside Stewardship Higher Tier (CSHT) agreement if your WMP is approved?')
       await analyzeAccessibility(page)
       await page.getByRole('link', { name: 'Back' }).click()
     })
 
     await test.step('eligibility-valid-wmp -> eligibility-wmp-agreement', async () => {
       await expect(page).toHaveURL('/woodland/eligibility-valid-wmp')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Do you already have any valid WMPs on any land in your application?')
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Do you already have any live woodland management plans (WMPs) on any land in your application?')
       await page.getByRole('radio', { name: 'Yes' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
     await test.step('eligibility-wmp-agreement', async () => {
       await expect(page).toHaveURL('/woodland/eligibility-wmp-agreement')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Enter the agreement number for any valid WMPs')
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Enter the FC plan references for any live WMPs')
       await analyzeAccessibility(page)
       await page.getByRole('textbox').fill('WMP-12345, WMP-23456')
       await page.getByRole('button', { name: 'Continue' }).click()
@@ -202,7 +203,7 @@ test.describe('Woodland Management Plan application', () => {
 
     await test.step('eligibility-higher-tier', async () => {
       await expect(page).toHaveURL('/woodland/eligibility-higher-tier')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Do you intend to apply for a Countryside Stewardship Higher Tier (CSHT) agreement if your WMP is approved?')
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Are you interested in a Countryside Stewardship Higher Tier (CSHT) agreement if your WMP is approved?')
       await page.getByRole('radio', { name: 'Yes' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
     })
@@ -217,13 +218,14 @@ test.describe('Woodland Management Plan application', () => {
           { name: 'Public body tenancy', status: 'Completed' },
           { name: 'Grazing rights', status: 'Completed' },
           { name: 'Existing WMPs', status: 'Completed' },
-          { name: 'WMP Agreement Number', status: 'Completed' },
+          { name: 'WMP agreement number', status: 'Completed' },
           { name: 'Higher Tier intention', status: 'Completed' },
         ],
         'About your woodland': [
-          { name: 'Select land parcels', status: 'Not started' },
+          { name: 'Land parcels', status: 'Not started' },
           { name: 'Woodland over 10 years old', status: 'Cannot start yet' },
           { name: 'Centre of your woodland', status: 'Cannot start yet' },
+          { name: 'Name of woodland', status: 'Cannot start yet' },
           { name: 'Forestry commission team', status: 'Cannot start yet' },
         ],
         'Check and submit application': [
@@ -232,7 +234,7 @@ test.describe('Woodland Management Plan application', () => {
           { name: 'Submit your application', status: 'Cannot start yet' },
         ],
       })
-      await page.getByRole('link', { name: 'Select land parcels' }).click()
+      await page.getByRole('link', { name: 'Land parcels' }).click()
     })
 
     await test.step('land-parcels', async () => {
@@ -269,6 +271,14 @@ test.describe('Woodland Management Plan application', () => {
       await page.getByRole('button', { name: 'Continue' }).click()
     })
 
+    await test.step('woodland-name', async () => {
+      await expect(page).toHaveURL('/woodland/woodland-name')
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('What is the name of your woodland?')
+      await analyzeAccessibility(page)
+      await page.getByRole('textbox').fill('Test Woodland')
+      await page.getByRole('button', { name: 'Continue' }).click()
+    })
+
     await test.step('which-forestry-commission-team', async () => {
       await expect(page).toHaveURL('/woodland/which-forestry-commission-team')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Which Forestry Commission team will be advising you?')
@@ -290,9 +300,10 @@ test.describe('Woodland Management Plan application', () => {
           { name: 'Higher Tier intention', status: 'Completed' },
         ],
         'About your woodland': [
-          { name: 'Select land parcels', status: 'Completed' },
+          { name: 'Land parcels', status: 'Completed' },
           { name: 'Woodland over 10 years old', status: 'Completed' },
           { name: 'Centre of your woodland', status: 'Completed' },
+          { name: 'Name of woodland', status: 'Completed' },
           { name: 'Forestry commission team', status: 'Completed' },
         ],
         'Check and submit application': [
