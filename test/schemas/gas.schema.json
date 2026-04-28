@@ -66,7 +66,7 @@
       "type": "string",
       "format": "date-time"
     },
-    "totalHectaresAppliedFor": {
+    "totalHectaresForSelectedParcels": {
       "type": "number",
       "minimum": 0.5
     },
@@ -177,7 +177,7 @@
     "appLandHasExistingWmp",
     "intendToApplyHigherTier",
     "includedAllEligibleWoodland",
-    "totalHectaresAppliedFor",
+    "totalHectaresForSelectedParcels",
     "hectaresTenOrOverYearsOld",
     "hectaresUnderTenYearsOld",
     "centreGridReference",
@@ -212,13 +212,13 @@
       "hectaresTenOrOverYearsOld",
       "hectaresUnderTenYearsOld"
     ],
-    "targetField": "totalHectaresAppliedFor"
+    "targetField": "totalHectaresForSelectedParcels"
   },
   "fgSumEquals": {
     "fields": [
       "landParcels[].areaHa"
     ],
-    "targetField": "totalHectaresAppliedFor"
+    "targetField": "totalHectaresForSelectedParcels"
   }
 }
 }
