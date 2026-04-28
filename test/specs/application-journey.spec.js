@@ -266,7 +266,7 @@ test.describe('Woodland Management Plan application', () => {
     await test.step('centre-of-woodland', async () => {
       await expect(page).toHaveURL('/woodland/centre-of-woodland')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Grid reference')
-      // await analyzeAccessibility(page) // TODO: missing label violation on grid reference input — bug in grants-ui
+      await analyzeAccessibility(page)
       await page.getByRole('textbox').fill('SP 1234 5678')
       await page.getByRole('button', { name: 'Save and continue' }).click()
     })
