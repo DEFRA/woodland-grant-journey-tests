@@ -9,8 +9,6 @@ import gasSchemaFile from '../schemas/gas.schema.json' with { type: 'json' }
 const CRN = '1100943757'
 const SBI = '113593357'
 
-const gasAnswersSchema = gasSchemaFile.questions
-
 test.describe('Woodland Management Plan application', () => {
   test.beforeEach(async () => {
     await clearApplicationState(CRN, SBI)
@@ -362,13 +360,14 @@ test.describe('Woodland Management Plan application', () => {
       await test.step('verify GAS submission', async () => {
         const request = await getApplicationSubmission(referenceNumber)
         expect(request).not.toBeNull()
+
         expect(request.body.json.metadata.clientRef).toEqual(referenceNumber.toLowerCase())
         expect(request.body.json.metadata.sbi).toEqual(SBI)
         expect(request.body.json.metadata.crn).toEqual(CRN)
         expect(request.body.json.metadata.frn).toBeTruthy()
 
         const ajv = new Ajv2020({ strict: false })
-        const validate = ajv.compile(gasAnswersSchema)
+        const validate = ajv.compile(gasSchemaFile.phases[0].questions)
         const valid = validate(request.body.json.answers)
         expect(valid, ajv.errorsText(validate.errors)).toBe(true)
       })
