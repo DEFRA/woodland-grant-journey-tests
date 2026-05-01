@@ -255,7 +255,7 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page).toHaveURL('/woodland/total-area-of-woodland')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Enter total area of woodland in your application')
       await analyzeAccessibility(page)
-      await expect(page.locator('.govuk-inset-text')).toContainText('The total area of your selected land parcels is 79.4865 ha')
+      await expect(page.locator('.govuk-inset-text')).toContainText('The total area of your selected land parcels is 79.4865ha')
       await page.getByLabel('Enter total area of woodland over 10 years old').fill('40.25')
       await page.getByLabel('Enter total area of new woodland under 10 years old').fill('15.75')
       await page.getByRole('button', { name: 'Save and continue' }).click()
