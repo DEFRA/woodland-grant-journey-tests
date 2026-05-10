@@ -3,7 +3,13 @@ import { loadEnvFile } from 'node:process'
 
 try { loadEnvFile('.env') } catch { /* no .env file */ }
 
-process.env.BASE_BACKEND_URL = 'http://localhost:3001'
+process.env.DEFRA_ID_USER_PASSWORD ??= 'x'
+process.env.MOCKSERVER_HOST ??= 'localhost'
+process.env.MOCKSERVER_PORT ??= '1080'
+process.env.GRANTS_UI_BACKEND_AUTH_TOKEN ??= 'auth_token'
+process.env.GRANTS_UI_BACKEND_ENCRYPTION_KEY ??= 'encryption_key'
+process.env.APPLICATION_LOCK_TOKEN_SECRET ??= 'dev-lock-secret'
+process.env.BASE_BACKEND_URL ??= 'http://localhost:3001'
 
 export default defineConfig({
   testDir: './test/specs',

@@ -35,6 +35,8 @@ npx playwright install chromium
 npm run test:local
 ```
 
+Default environment variables for local runs are set in `playwright.local.config.js`. Override any of them by creating a `.env` file in the project root.
+
 ## Running the Test Suite
 
 There are three Playwright configuration files for different environments:
@@ -94,7 +96,7 @@ woodland-grant-journey-tests/
 
 Journey tests authenticate via the `Defra ID` OIDC provider for the environment in use (real instance or stub). The `authenticate()` helper function handles the full OIDC redirect flow automatically.
 
-**Password:** set via `DEFRA_ID_USER_PASSWORD` env var (default: `x`)
+**Password:** set via `DEFRA_ID_USER_PASSWORD` env var (defaults to `x` locally)
 
 Each test must supply its own CRN so tests can run in parallel without sharing session state.
 

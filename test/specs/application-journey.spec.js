@@ -366,7 +366,7 @@ test.describe('Woodland Management Plan application', () => {
         expect(request.body.json.metadata.crn).toEqual(CRN)
         expect(request.body.json.metadata.frn).toBeTruthy()
 
-        const ajv = new Ajv2020({ strict: false })
+        const ajv = new Ajv2020({ strict: false, formats: { 'date-time': true } })
         const validate = ajv.compile(gasSchemaFile.phases[0].questions)
         const valid = validate(request.body.json.answers)
         expect(valid, ajv.errorsText(validate.errors)).toBe(true)
