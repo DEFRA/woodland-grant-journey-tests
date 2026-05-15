@@ -214,9 +214,6 @@ test.describe('Woodland Management Plan application lifecycle', () => {
 
     await test.step('reopen browser and are redirected to /agreements', async () => {
       await page.context().close()
-      const context = await browser.newContext()
-      page = await context.newPage()
-      await page.goto('/woodland')
       await authenticate(page, CRN)
       await expect(page).toHaveURL(/\/agreement/)
     })
