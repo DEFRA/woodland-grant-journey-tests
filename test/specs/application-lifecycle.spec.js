@@ -208,8 +208,8 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       referenceNumber = await page.locator('.govuk-panel__body strong').textContent()
     })
 
-    await test.step('GAS status is now OFFER_SENT', async () => {
-      expectationIds.push(await setStatusQueryResponse(referenceNumber, 'OFFER_SENT'))
+    await test.step('GAS status is now STATUS_AGREEMENT_READY_FOR_APPLICANT', async () => {
+      expectationIds.push(await setStatusQueryResponse(referenceNumber, 'STATUS_AGREEMENT_READY_FOR_APPLICANT'))
     })
 
     await test.step('reopen browser and are redirected to /agreements', async () => {
