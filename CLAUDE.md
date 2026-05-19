@@ -31,7 +31,7 @@ Runs against a CDP-deployed instance of `grants-ui`. The base URL is built from 
 https://grants-ui.${ENVIRONMENT}.cdp-int.defra.cloud
 ```
 
-Triggered via the CDP Portal. The HTML report is published to S3 after the run. Config: `playwright.config.js`.
+Triggered via the CDP Portal. The HTML report is published to S3 after the run. Config: `playwright.cdp.config.js`.
 
 ## npm scripts
 

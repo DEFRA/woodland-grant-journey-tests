@@ -51,7 +51,7 @@ npm run test:local
 - Headed browser (visible)
 - Report opens automatically on failure
 
-### CDP Portal — playwright.config.js
+### CDP Portal — playwright.cdp.config.js
 
 ```bash
 npm test
@@ -87,7 +87,7 @@ woodland-grant-journey-tests/
 ├── test/
 │   ├── utils/
 │   └── specs/
-├── playwright.config.js        # CDP Portal config
+├── playwright.cdp.config.js    # CDP Portal config
 ├── playwright.local.config.js  # Local development config
 └── playwright.ci.config.js     # CI pipeline config
 ```
