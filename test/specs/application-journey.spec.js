@@ -4,7 +4,6 @@ import { authenticate } from '../utils/auth.js'
 import { clearApplicationState } from '../utils/backend.js'
 import { analyzeAccessibility } from '../utils/accessibility.js'
 import { getApplicationSubmission } from '../utils/gas.js'
-import gasSchemaFile from '../schemas/gas.schema.json' with { type: 'json' }
 
 const CRN = '1100943757'
 const SBI = '113593357'
@@ -385,8 +384,9 @@ test.describe('Woodland Management Plan application', () => {
         expect(request.body.json.metadata.crn).toEqual(CRN)
         expect(request.body.json.metadata.frn).toBeTruthy()
 
+        const gasSchemaFile = await import('../schemas/gas.schema.json', { with: { type: 'json' } })
         const ajv = new Ajv2020({ strict: false, formats: { 'date-time': true } })
-        const validate = ajv.compile(gasSchemaFile.phases[0].questions)
+        const validate = ajv.compile(gasSchemaFile.default.phases[0].questions)
         const valid = validate(request.body.json.answers)
         expect(valid, ajv.errorsText(validate.errors)).toBe(true)
       })
