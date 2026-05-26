@@ -4,7 +4,6 @@ import { authenticate } from '../utils/auth.js'
 import { clearApplicationState } from '../utils/backend.js'
 import { analyzeAccessibility } from '../utils/accessibility.js'
 import { getApplicationSubmission } from '../utils/gas.js'
-import gasSchemaFile from '../schemas/gas.schema.json' with { type: 'json' }
 
 const CRN = '1100943757'
 const SBI = '113593357'
@@ -256,6 +255,25 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Enter total area of woodland in your application')
       await analyzeAccessibility(page)
       await expect(page.locator('.govuk-inset-text')).toContainText('The total area of your selected land parcels is 79.4865ha')
+
+      // combined total below 0.5ha minimum
+      await page.getByLabel('Enter total area of woodland over 10 years old').fill('0.2')
+      await page.getByLabel('Enter total area of new woodland under 10 years old').fill('0.2')
+      await page.getByRole('button', { name: 'Save and continue' }).click()
+      await expect(page.locator('.govuk-error-summary')).toContainText('The total area of woodland must be at least 0.5ha')
+
+      // over-10-years value below 0.4ha minimum
+      await page.getByLabel('Enter total area of woodland over 10 years old').fill('0.1')
+      await page.getByLabel('Enter total area of new woodland under 10 years old').fill('0.5')
+      await page.getByRole('button', { name: 'Save and continue' }).click()
+      await expect(page.locator('.govuk-error-summary')).toContainText('The area of woodland over 10 years old (0.1 ha) does not meet the minimum required area of (0.4 ha)')
+
+      // combined total exceeds total land parcel area
+      await page.getByLabel('Enter total area of woodland over 10 years old').fill('50')
+      await page.getByLabel('Enter total area of new woodland under 10 years old').fill('30')
+      await page.getByRole('button', { name: 'Save and continue' }).click()
+      await expect(page.locator('.govuk-error-summary')).toContainText('Total area of woodland cannot be more than total area of selected land parcels (79.4865ha)')
+
       await page.getByLabel('Enter total area of woodland over 10 years old').fill('40.25')
       await page.getByLabel('Enter total area of new woodland under 10 years old').fill('15.75')
       await page.getByRole('button', { name: 'Save and continue' }).click()
@@ -366,8 +384,9 @@ test.describe('Woodland Management Plan application', () => {
         expect(request.body.json.metadata.crn).toEqual(CRN)
         expect(request.body.json.metadata.frn).toBeTruthy()
 
+        const gasSchemaFile = await import('../schemas/gas.schema.json', { with: { type: 'json' } })
         const ajv = new Ajv2020({ strict: false, formats: { 'date-time': true } })
-        const validate = ajv.compile(gasSchemaFile.phases[0].questions)
+        const validate = ajv.compile(gasSchemaFile.default.phases[0].questions)
         const valid = validate(request.body.json.answers)
         expect(valid, ajv.errorsText(validate.errors)).toBe(true)
       })

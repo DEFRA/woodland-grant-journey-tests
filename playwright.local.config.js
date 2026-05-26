@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
 import { loadEnvFile } from 'node:process'
+import { execSync } from 'node:child_process'
+
+execSync('sh scripts/fetch-schema.sh', { stdio: 'inherit' })
 
 try { loadEnvFile('.env') } catch { /* no .env file */ }
 

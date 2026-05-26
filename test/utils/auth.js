@@ -16,6 +16,6 @@ export async function authenticate(page, crn) {
     await page.locator('input#password').fill(process.env.DEFRA_ID_USER_PASSWORD ?? 'x')
     await page.locator('button[type="submit"]').click()
 
-    await expect(page).toHaveURL(/\/woodland/, { timeout: 30_000 })
+    await expect(page).toHaveURL(/\/(woodland|agreement)/, { timeout: 30_000 })
   }
 }
