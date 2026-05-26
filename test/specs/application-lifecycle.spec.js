@@ -208,8 +208,8 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       referenceNumber = await page.locator('.govuk-panel__body strong').textContent()
     })
 
-    await test.step('GAS status is now OFFER_SENT', async () => {
-      expectationIds.push(await setStatusQueryResponse(referenceNumber, 'OFFER_SENT'))
+    await test.step('GAS status is now STATUS_AGREEMENT_READY_FOR_APPLICANT', async () => {
+      expectationIds.push(await setStatusQueryResponse(referenceNumber, 'STATUS_AGREEMENT_READY_FOR_APPLICANT'))
     })
 
     await test.step('reopen browser and are redirected to /agreements', async () => {
@@ -219,6 +219,21 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await page.goto('/woodland')
       await authenticate(page, CRN)
       await expect(page).toHaveURL(/\/agreement/)
+    })
+
+    // STATUS_READY_TO_FORWARD
+
+    await test.step('GAS status is now STATUS_READY_TO_FORWARD', async () => {
+      expectationIds.push(await setStatusQueryResponse(referenceNumber, 'STATUS_READY_TO_FORWARD'))
+    })
+
+    await test.step('reopen browser and are NOT redirected to /agreements', async () => {
+      await page.context().close()
+      const context = await browser.newContext()
+      page = await context.newPage()
+      await page.goto('/woodland')
+      await authenticate(page, CRN)
+      await expect(page).not.toHaveURL(/\/agreement/)
     })
 
     await test.step('GAS status is now APPLICATION_WITHDRAWN', async () => {
