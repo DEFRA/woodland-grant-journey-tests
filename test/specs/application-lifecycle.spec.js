@@ -221,6 +221,21 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await expect(page).toHaveURL(/\/agreement/)
     })
 
+    // STATUS_READY_TO_FORWARD
+
+    await test.step('GAS status is now STATUS_READY_TO_FORWARD', async () => {
+      expectationIds.push(await setStatusQueryResponse(referenceNumber, 'STATUS_READY_TO_FORWARD'))
+    })
+
+    await test.step('reopen browser and are NOT redirected to /agreements', async () => {
+      await page.context().close()
+      const context = await browser.newContext()
+      page = await context.newPage()
+      await page.goto('/woodland')
+      await authenticate(page, CRN)
+      await expect(page).not.toHaveURL(/\/agreement/)
+    })
+
     await test.step('GAS status is now APPLICATION_WITHDRAWN', async () => {
       expectationIds.push(await setStatusQueryResponse(referenceNumber, 'APPLICATION_WITHDRAWN'))
     })
