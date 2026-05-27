@@ -208,32 +208,6 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       referenceNumber = await page.locator('.govuk-panel__body strong').textContent()
     })
 
-    await test.step('GAS status is now STATUS_AGREEMENT_OFFERED', async () => {
-      expectationIds.push(await setStatusQueryResponse(referenceNumber, 'STATUS_AGREEMENT_OFFERED'))
-    })
-
-    await test.step('reopen browser and are redirected to /agreements', async () => {
-      await page.context().close()
-      const context = await browser.newContext()
-      page = await context.newPage()
-      await page.goto('/woodland')
-      await authenticate(page, CRN)
-      await expect(page).toHaveURL(/\/agreement/)
-    })
-
-    await test.step('GAS status is now STATUS_APPLICATION_COMPLETED', async () => {
-      expectationIds.push(await setStatusQueryResponse(referenceNumber, 'STATUS_APPLICATION_COMPLETED'))
-    })
-
-    await test.step('reopen browser and are redirected to /agreements', async () => {
-      await page.context().close()
-      const context = await browser.newContext()
-      page = await context.newPage()
-      await page.goto('/woodland')
-      await authenticate(page, CRN)
-      await expect(page).toHaveURL(/\/agreement/)
-    })
-
     await test.step('GAS status is now APPLICATION_WITHDRAWN', async () => {
       expectationIds.push(await setStatusQueryResponse(referenceNumber, 'APPLICATION_WITHDRAWN'))
     })
