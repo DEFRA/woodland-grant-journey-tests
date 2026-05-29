@@ -16,7 +16,7 @@ test.describe('Woodland Management Plan application', () => {
   test('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
     let referenceNumber
     await test.step('authentication', async () => {
-      await page.goto('/woodland')
+      await page.goto('/woodland', { waitUntil: 'commit' })
       await authenticate(page, CRN)
     })
 
@@ -24,16 +24,24 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page).toHaveURL('/woodland/check-details')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Confirm your details')
       await analyzeAccessibility(page)
-      await page.getByRole('radio', { name: 'No' }).click()
-      await page.getByRole('button', { name: 'Continue' }).click()
+    })
 
-      await expect(page).toHaveURL('/woodland/update-details')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Update your details')
-      await analyzeAccessibility(page)
-      await page.getByRole('link', { name: 'Back' }).click()
+    if (CI()) {
+      await test.step('check-details -> update-details -> check-details', async () => {
+        await page.getByRole('radio', { name: 'No' }).click()
+        await page.getByRole('button', { name: 'Continue' }).click()
 
-      await expect(page).toHaveURL('/woodland/check-details')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Confirm your details')
+        await expect(page).toHaveURL('/woodland/update-details')
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('Update your details')
+        await analyzeAccessibility(page)
+        await page.getByRole('link', { name: 'Back' }).click()
+
+        await expect(page).toHaveURL('/woodland/check-details')
+        await expect(page.getByRole('heading', { level: 1 })).toContainText('Confirm your details')
+      })
+    }
+
+    await test.step('check-details -> tasks', async () => {
       await page.getByRole('radio', { name: 'Yes' }).click()
       await page.getByRole('button', { name: 'Continue' }).click()
     })
@@ -127,7 +135,6 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Are you a tenant of a public body?')
       await page.getByRole('radio', { name: 'No' }).click()
       await page.getByRole('button', { name: 'Save and continue' }).click()
-
     })
 
     await test.step('eligibility-grazing-rights', async () => {
@@ -238,15 +245,23 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page).toHaveURL('/woodland/land-parcels')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Select all the eligible land parcels for the location of your woodland')
       await analyzeAccessibility(page)
-      // SD6252 7537 is under 0.5ha — selecting it alone should fail validation
-      await page.getByRole('checkbox', { name: 'SD6252 7537' }).check()
-      await page.getByRole('button', { name: 'Save and continue' }).click()
 
-      await expect(page).toHaveURL('/woodland/land-parcels')
-      await expect(page.locator('.govuk-error-summary')).toContainText('Total area of selected land parcels must be more than 0.5ha')
+      if (CI()) {
+        // SD6252 7537 is under 0.5ha — selecting it alone should fail validation
+        await page.getByRole('checkbox', { name: 'SD6252 7537' }).check()
+        await page.getByRole('button', { name: 'Save and continue' }).click()
 
-      await page.getByRole('checkbox', { name: 'SD6351 8781' }).check()
-      await page.getByRole('checkbox', { name: 'SD6352 8774' }).check()
+        await expect(page).toHaveURL('/woodland/land-parcels')
+        await expect(page.locator('.govuk-error-summary')).toContainText('Total area of selected land parcels must be more than 0.5ha')
+
+        await page.getByRole('checkbox', { name: 'SD6351 8781' }).check()
+        await page.getByRole('checkbox', { name: 'SD6352 8774' }).check()
+      } else {
+        for (const checkbox of await page.getByRole('checkbox').all()) {
+          await checkbox.check()
+        }
+      }
+
       await page.getByRole('button', { name: 'Save and continue' }).click()
     })
 
@@ -254,28 +269,35 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page).toHaveURL('/woodland/total-area-of-woodland')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Enter total area of woodland in your application')
       await analyzeAccessibility(page)
-      await expect(page.locator('.govuk-inset-text')).toContainText('The total area of your selected land parcels is 79.4865ha')
 
-      // combined total below 0.5ha minimum
-      await page.getByLabel('Enter total area of woodland over 10 years old').fill('0.2')
-      await page.getByLabel('Enter total area of new woodland under 10 years old').fill('0.2')
-      await page.getByRole('button', { name: 'Save and continue' }).click()
-      await expect(page.locator('.govuk-error-summary')).toContainText('The total area of woodland must be at least 0.5ha')
+      if (CI()) {
+        await expect(page.locator('.govuk-inset-text')).toContainText('The total area of your selected land parcels is 79.4865ha')
 
-      // over-10-years value below 0.4ha minimum
-      await page.getByLabel('Enter total area of woodland over 10 years old').fill('0.1')
-      await page.getByLabel('Enter total area of new woodland under 10 years old').fill('0.5')
-      await page.getByRole('button', { name: 'Save and continue' }).click()
-      await expect(page.locator('.govuk-error-summary')).toContainText('The area of woodland over 10 years old (0.1 ha) does not meet the minimum required area of (0.4 ha)')
+        // combined total below 0.5ha minimum
+        await page.getByLabel('Enter total area of woodland over 10 years old').fill('0.2')
+        await page.getByLabel('Enter total area of new woodland under 10 years old').fill('0.2')
+        await page.getByRole('button', { name: 'Save and continue' }).click()
+        await expect(page.locator('.govuk-error-summary')).toContainText('The total area of woodland must be at least 0.5ha')
 
-      // combined total exceeds total land parcel area
-      await page.getByLabel('Enter total area of woodland over 10 years old').fill('50')
-      await page.getByLabel('Enter total area of new woodland under 10 years old').fill('30')
-      await page.getByRole('button', { name: 'Save and continue' }).click()
-      await expect(page.locator('.govuk-error-summary')).toContainText('Total area of woodland cannot be more than total area of selected land parcels (79.4865ha)')
+        // over-10-years value below 0.4ha minimum
+        await page.getByLabel('Enter total area of woodland over 10 years old').fill('0.1')
+        await page.getByLabel('Enter total area of new woodland under 10 years old').fill('0.5')
+        await page.getByRole('button', { name: 'Save and continue' }).click()
+        await expect(page.locator('.govuk-error-summary')).toContainText('The area of woodland over 10 years old (0.1 ha) does not meet the minimum required area of (0.4 ha)')
 
-      await page.getByLabel('Enter total area of woodland over 10 years old').fill('40.25')
-      await page.getByLabel('Enter total area of new woodland under 10 years old').fill('15.75')
+        // combined total exceeds total land parcel area
+        await page.getByLabel('Enter total area of woodland over 10 years old').fill('50')
+        await page.getByLabel('Enter total area of new woodland under 10 years old').fill('30')
+        await page.getByRole('button', { name: 'Save and continue' }).click()
+        await expect(page.locator('.govuk-error-summary')).toContainText('Total area of woodland cannot be more than total area of selected land parcels (79.4865ha)')
+
+        await page.getByLabel('Enter total area of woodland over 10 years old').fill('40.25')
+        await page.getByLabel('Enter total area of new woodland under 10 years old').fill('15.75')
+      } else {
+        await page.getByLabel('Enter total area of woodland over 10 years old').fill('0.4')
+        await page.getByLabel('Enter total area of new woodland under 10 years old').fill('0.1')
+      }
+
       await page.getByRole('button', { name: 'Save and continue' }).click()
     })
 
@@ -374,7 +396,7 @@ test.describe('Woodland Management Plan application', () => {
       await printTab.close()
     })
 
-    if (process.env.MOCKSERVER_HOST) {
+    if (CI()) {
       await test.step('verify GAS submission', async () => {
         const request = await getApplicationSubmission(referenceNumber)
         expect(request).not.toBeNull()
@@ -393,6 +415,10 @@ test.describe('Woodland Management Plan application', () => {
     }
   })
 })
+
+function CI() {
+  return !!process.env.MOCKSERVER_HOST
+}
 
 async function assertTaskStatuses(page, sections) {
   for (const [heading, tasks] of Object.entries(sections)) {

@@ -17,7 +17,7 @@ process.env.BASE_BACKEND_URL ??= 'http://localhost:3001'
 export default defineConfig({
   testDir: './test/specs',
   testMatch: '**/*.spec.js',
-  grep: '@runme',
+  grep: /@runme/,
   timeout: 120_000,
   fullyParallel: false,
   workers: 1,
