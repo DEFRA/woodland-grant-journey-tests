@@ -1,4 +1,4 @@
-FROM node:24-slim
+FROM mcr.microsoft.com/playwright:v1.59.1-noble
 
 ENV TZ="Europe/London"
 
@@ -18,10 +18,9 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
 
 WORKDIR /app
 
-COPY . .
+COPY package*.json ./
 RUN npm ci
-RUN npx playwright install --with-deps chromium
-
+COPY . .
 ENTRYPOINT [ "./entrypoint.sh" ]
 
 CMD ["npm", "test"]
