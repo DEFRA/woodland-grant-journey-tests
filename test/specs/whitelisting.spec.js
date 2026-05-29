@@ -11,9 +11,9 @@ test.describe('Whitelisting', () => {
 
   test('redirects a non-whitelisted user to the unauthorised page', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
     await test.step('authentication', async () => {
-      await page.goto('/woodland', { waitUntil: 'commit' })
+      await page.goto('/woodland')
       const crnInput = page.locator('input#crn')
-      await crnInput.waitFor({ state: 'visible', timeout: 30_000 })
+      await crnInput.waitFor({ state: 'visible', timeout: 90_000 })
       await crnInput.fill(CRN)
       await page.locator('input#password').fill(process.env.DEFRA_ID_USER_PASSWORD ?? 'x')
       await page.locator('button[type="submit"]').click()

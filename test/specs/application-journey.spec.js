@@ -13,10 +13,10 @@ test.describe('Woodland Management Plan application', () => {
     await clearApplicationState(CRN, SBI)
   })
 
-  test('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
+  test('submits a full WMP application from start to confirmation', { tag: ['@runme', '@cdp', '@ci'] }, async ({ page }) => {
     let referenceNumber
     await test.step('authentication', async () => {
-      await page.goto('/woodland', { waitUntil: 'commit' })
+      await page.goto('/woodland')
       await authenticate(page, CRN)
     })
 

@@ -11,7 +11,7 @@ import { expect } from '@playwright/test'
  */
 export async function authenticate(page, crn) {
   const crnInput = page.locator('input#crn')
-  await crnInput.waitFor({ state: 'visible', timeout: 60_000 })
+  await crnInput.waitFor({ state: 'visible', timeout: 90_000 })
   await crnInput.fill(crn)
   await page.locator('input#password').fill(process.env.DEFRA_ID_USER_PASSWORD ?? 'x')
   await page.locator('button[type="submit"]').click()

@@ -26,7 +26,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
     let referenceNumber
 
     await test.step('submit application', async () => {
-      await page.goto('/woodland', { waitUntil: 'commit' })
+      await page.goto('/woodland')
       await authenticate(page, CRN)
 
       // check-details
@@ -137,7 +137,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await page.context().close()
       const context = await browser.newContext()
       page = await context.newPage()
-      await page.goto('/woodland', { waitUntil: 'commit' })
+      await page.goto('/woodland')
       await authenticate(page, CRN)
       await expect(page).toHaveURL('/woodland/confirmation')
     })
@@ -150,7 +150,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await page.context().close()
       const context = await browser.newContext()
       page = await context.newPage()
-      await page.goto('/woodland', { waitUntil: 'commit' })
+      await page.goto('/woodland')
       await authenticate(page, CRN)
       await expect(page).toHaveURL('/woodland/tasks')
       await assertTaskStatuses(page, {
@@ -216,7 +216,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await page.context().close()
       const context = await browser.newContext()
       page = await context.newPage()
-      await page.goto('/woodland', { waitUntil: 'commit' })
+      await page.goto('/woodland')
       await authenticate(page, CRN)
       await expect(page).toHaveURL('/agreement')
     })
@@ -229,7 +229,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await page.context().close()
       const context = await browser.newContext()
       page = await context.newPage()
-      await page.goto('/woodland', { waitUntil: 'commit' })
+      await page.goto('/woodland')
       await authenticate(page, CRN)
       await expect(page).toHaveURL('/agreement')
     })
@@ -242,7 +242,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await page.context().close()
       const context = await browser.newContext()
       page = await context.newPage()
-      await page.goto('/woodland', { waitUntil: 'commit' })
+      await page.goto('/woodland')
       await authenticate(page, CRN)
       await expect(page).toHaveURL('/woodland/check-details')
     })
