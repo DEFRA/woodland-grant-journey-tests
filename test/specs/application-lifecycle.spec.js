@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test'
-import { authenticate } from '../utils/auth.js'
+import { authenticateTo } from '../utils/auth.js'
 import { clearApplicationState } from '../utils/backend.js'
 import { clearExpectation, setDefaultStatusQuery404Response, getApplicationSubmission, setStatusQueryResponse } from '../utils/gas.js'
 
@@ -26,8 +26,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
     let referenceNumber
 
     await test.step('submit application', async () => {
-      await page.goto('/woodland')
-      await authenticate(page, CRN)
+      await authenticateTo(page, 'woodland', CRN)
 
       // check-details
       await expect(page).toHaveURL('/woodland/check-details')
@@ -137,8 +136,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await page.context().close()
       const context = await browser.newContext()
       page = await context.newPage()
-      await page.goto('/woodland')
-      await authenticate(page, CRN)
+      await authenticateTo(page, 'woodland', CRN)
       await expect(page).toHaveURL('/woodland/confirmation')
     })
 
@@ -150,8 +148,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await page.context().close()
       const context = await browser.newContext()
       page = await context.newPage()
-      await page.goto('/woodland')
-      await authenticate(page, CRN)
+      await authenticateTo(page, 'woodland', CRN)
       await expect(page).toHaveURL('/woodland/tasks')
       await assertTaskStatuses(page, {
         'Check your eligibility': [
@@ -216,8 +213,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await page.context().close()
       const context = await browser.newContext()
       page = await context.newPage()
-      await page.goto('/woodland')
-      await authenticate(page, CRN)
+      await authenticateTo(page, 'woodland', CRN)
       await expect(page).toHaveURL('/agreement')
     })
 
@@ -229,8 +225,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await page.context().close()
       const context = await browser.newContext()
       page = await context.newPage()
-      await page.goto('/woodland')
-      await authenticate(page, CRN)
+      await authenticateTo(page, 'woodland', CRN)
       await expect(page).toHaveURL('/agreement')
     })
 
@@ -242,8 +237,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await page.context().close()
       const context = await browser.newContext()
       page = await context.newPage()
-      await page.goto('/woodland')
-      await authenticate(page, CRN)
+      await authenticateTo(page, 'woodland', CRN)
       await expect(page).toHaveURL('/woodland/check-details')
     })
   })
