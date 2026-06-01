@@ -10,7 +10,9 @@ import { expect } from '@playwright/test'
  * @param {string} crn
  */
 export async function authenticateTo(page, path, crn) {
-  await page.goto(`/${path}`, { waitUntil: 'domcontentloaded' }).catch(() => {})
+  await page.goto(`/${path}`, { waitUntil: 'domcontentloaded' }).catch((err) => {
+    if (!err.message.includes('ERR_ABORTED')) throw err
+  })
   const crnInput = page.locator('input#crn')
   await crnInput.waitFor({ state: 'visible', timeout: 90_000 })
   await crnInput.fill(crn)
