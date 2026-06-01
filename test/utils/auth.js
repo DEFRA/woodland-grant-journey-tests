@@ -9,7 +9,8 @@ import { expect } from '@playwright/test'
  * @param {import('@playwright/test').Page} page
  * @param {string} crn
  */
-export async function authenticate(page, crn) {
+export async function authenticateTo(page, path, crn) {
+  await page.goto(`/${path}`, { waitUntil: 'domcontentloaded' })
   const crnInput = page.locator('input#crn')
   await crnInput.waitFor({ state: 'visible', timeout: 90_000 })
   await crnInput.fill(crn)

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import Ajv2020 from 'ajv/dist/2020.js'
-import { authenticate } from '../utils/auth.js'
+import { authenticateTo } from '../utils/auth.js'
 import { clearApplicationState } from '../utils/backend.js'
 import { analyzeAccessibility } from '../utils/accessibility.js'
 import { getApplicationSubmission } from '../utils/gas.js'
@@ -16,8 +16,7 @@ test.describe('Woodland Management Plan application', () => {
   test('submits a full WMP application from start to confirmation', { tag: ['@runme', '@cdp', '@ci'] }, async ({ page }) => {
     let referenceNumber
     await test.step('authentication', async () => {
-      await page.goto('/woodland')
-      await authenticate(page, CRN)
+      await authenticateTo(page, 'woodland', CRN)
     })
 
     await test.step('check-details', async () => {
