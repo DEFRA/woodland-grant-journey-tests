@@ -11,10 +11,8 @@ test.describe('Whitelisting', () => {
 
   test('redirects a non-whitelisted user to the unauthorised page', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
     await test.step('authentication', async () => {
-      await Promise.all([
-        page.waitForURL(/b2clogin\.com|defra-id|sign-in|crn/, { timeout: 90_000 }),
-        page.goto('/woodland').catch(() => {}),
-      ])
+      page.goto('/woodland').catch(() => {})
+
       const crnInput = page.locator('input#crn')
       await crnInput.waitFor({ state: 'visible', timeout: 90_000 })
       await crnInput.fill(CRN)

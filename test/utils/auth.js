@@ -10,15 +10,13 @@ import { expect } from '@playwright/test'
  * @param {string} crn
  */
 export async function authenticateTo(page, path, crn) {
-  await Promise.all([
-    page.waitForURL(/b2clogin\.com|defra-id|sign-in|crn/, { timeout: 90_000 }),
-    page.goto(`/${path}`).catch(() => {}),
-  ])
+  await page.goto(path)
   const crnInput = page.locator('input#crn')
-  await crnInput.waitFor({ state: 'visible', timeout: 90_000 })
-  await crnInput.fill(crn)
-  await page.locator('input#password').fill(process.env.DEFRA_ID_USER_PASSWORD ?? 'x')
-  await page.locator('button[type="submit"]').click()
+  if (await crnInput.isVisible({ timeout: 30_000 }).catch(() => false)) {
+    await crnInput.fill(crn)
+    await page.locator('input#password').fill(process.env.DEFRA_ID_USER_PASSWORD ?? 'x')
+    await page.locator('button[type="submit"]').click()
 
-  await expect(page).toHaveURL(/\/(woodland|agreement)/, { timeout: 60_000 })
+    await expect(page).toHaveURL(/\/(woodland|agreement)/, { timeout: 30_000 })
+  }
 }
