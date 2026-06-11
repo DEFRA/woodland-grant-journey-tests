@@ -35,7 +35,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
 
       // tasks
       await expect(page).toHaveURL('/woodland/tasks')
-      await page.getByRole('link', { name: 'All land registered' }).click()
+      await page.getByRole('link', { name: 'Check your eligibility' }).click()
 
       // eligibility-land-registered
       await expect(page).toHaveURL('/woodland/eligibility-land-registered')
@@ -69,7 +69,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
 
       // tasks
       await expect(page).toHaveURL('/woodland/tasks')
-      await page.getByRole('link', { name: 'Land parcels' }).click()
+      await page.getByRole('link', { name: 'About your woodland' }).click()
 
       // land-parcels
       await expect(page).toHaveURL('/woodland/land-parcels')
@@ -99,7 +99,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
 
       // tasks
       await expect(page).toHaveURL('/woodland/tasks')
-      await page.getByRole('link', { name: 'Check your answers' }).click()
+      await page.getByRole('link', { name: 'Check and submit application' }).click()
 
       // summary
       await expect(page).toHaveURL('/woodland/summary')
@@ -150,41 +150,39 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       page = await context.newPage()
       await authenticateTo(page, 'woodland', CRN)
       await expect(page).toHaveURL('/woodland/tasks')
-      await assertTaskStatuses(page, {
-        'Check your eligibility': [
-          { name: 'All land registered', status: 'Completed' },
-          { name: 'Management control', status: 'Completed' },
-          { name: 'Public body tenant', status: 'Completed' },
-          { name: 'Common or shared grazing rights', status: 'Completed' },
-          { name: 'Live WMPs on land', status: 'Completed' },
-          { name: 'Apply for CSHT', status: 'Completed' },
-        ],
-        'About your woodland': [
-          { name: 'Land parcels', status: 'Completed' },
-          { name: 'Enter total area of woodland in your application', status: 'Completed' },
-          { name: 'Grid reference', status: 'Completed' },
-          { name: 'Name of woodland', status: 'Completed' },
-          { name: 'Forestry Commission (FC) team', status: 'Completed' },
-        ],
-        'Check and submit application': [
-          { name: 'Check your answers', status: 'Not started' },
-          { name: 'Potential funding', status: 'Cannot start yet' },
-          { name: 'Submit your application', status: 'Cannot start yet' },
-        ],
-      })
+      await assertTaskStatuses(page, [
+        { name: 'Check your eligibility', status: 'Completed' },
+        { name: 'About your woodland', status: 'Completed' },
+        { name: 'Check and submit application', status: 'Not started' },
+      ])
     })
 
     await test.step('amend application and resubmit', async () => {
-      await page.getByRole('link', { name: 'Apply for CSHT' }).click()
+      await page.getByRole('link', { name: 'Check your eligibility' }).click()
 
       // eligibility-higher-tier
+      await expect(page).toHaveURL('/woodland/eligibility-land-registered')
+      await page.getByRole('button', { name: 'Save and continue' }).click()
+
+      await expect(page).toHaveURL('/woodland/eligibility-management-control')
+      await page.getByRole('button', { name: 'Save and continue' }).click()
+
+      await expect(page).toHaveURL('/woodland/eligibility-tenant')
+      await page.getByRole('button', { name: 'Save and continue' }).click()
+
+      await expect(page).toHaveURL('/woodland/eligibility-grazing-rights')
+      await page.getByRole('button', { name: 'Save and continue' }).click()
+
+      await expect(page).toHaveURL('/woodland/eligibility-valid-wmp')
+      await page.getByRole('button', { name: 'Save and continue' }).click()
+
       await expect(page).toHaveURL('/woodland/eligibility-higher-tier')
       await page.getByRole('radio', { name: 'No' }).click()
       await page.getByRole('button', { name: 'Save and continue' }).click()
 
       // tasks
       await expect(page).toHaveURL('/woodland/tasks')
-      await page.getByRole('link', { name: 'Check your answers' }).click()
+      await page.getByRole('link', { name: 'Check and submit application' }).click()
 
       // summary
       await expect(page).toHaveURL('/woodland/summary')
@@ -243,14 +241,9 @@ test.describe('Woodland Management Plan application lifecycle', () => {
   })
 })
 
-async function assertTaskStatuses(page, sections) {
-  for (const [heading, tasks] of Object.entries(sections)) {
-    const section = page.locator('.govuk-task-list', {
-      has: page.locator('xpath=preceding-sibling::h2', { hasText: heading }),
-    })
-    for (const { name, status } of tasks) {
-      const item = section.locator('.govuk-task-list__item', { hasText: name })
-      await expect(item.locator('.govuk-task-list__status')).toContainText(status)
-    }
+async function assertTaskStatuses(page, tasks) {
+  for (const { name, status } of tasks) {
+    const item = page.locator('.govuk-task-list__item', { hasText: name })
+    await expect(item.locator('.govuk-task-list__status')).toContainText(status)
   }
 }
