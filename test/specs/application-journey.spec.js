@@ -13,7 +13,7 @@ test.describe('Woodland Management Plan application', () => {
     await clearApplicationState(CRN, SBI)
   })
 
-  test('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
+  test('submits a full WMP application from start to confirmation', { tag: ['@runme', '@cdp', '@ci'] }, async ({ page }) => {
     let referenceNumber
     await test.step('authentication', async () => {
       await authenticateTo(page, 'woodland', CRN)
@@ -336,6 +336,7 @@ test.describe('Woodland Management Plan application', () => {
         expect(request.body.json.metadata.sbi).toEqual(SBI)
         expect(request.body.json.metadata.crn).toEqual(CRN)
         expect(request.body.json.metadata.frn).toBeTruthy()
+        expect(request.body.json.metadata.configVersion).toMatch(/^\d+\.\d+\.\d+$/)
 
         const gasSchemaFile = await import('../schemas/gas.schema.json', { with: { type: 'json' } })
         const ajv = new Ajv2020({ strict: false, formats: { 'date-time': true } })
