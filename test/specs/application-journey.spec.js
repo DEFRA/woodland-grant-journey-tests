@@ -321,7 +321,7 @@ test.describe('Woodland Management Plan application', () => {
       ])
       await printTab.waitForLoadState()
       await expect(printTab).toHaveURL('/woodland/print-submitted-application')
-      await expect(printTab.getByRole('heading', { level: 1 })).toContainText('Woodland Management Plan application')
+      await expect(printTab.getByRole('heading', { level: 1 })).toContainText('Apply for a woodland management plan (WMP)')
       await expect(printTab.getByText(referenceNumber)).toBeVisible()
       await expect(printTab.getByRole('button', { name: 'Print this page' })).toBeVisible()
       await printTab.close()
