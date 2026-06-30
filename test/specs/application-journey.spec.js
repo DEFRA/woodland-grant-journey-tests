@@ -45,7 +45,7 @@ test.describe('Woodland Management Plan application', () => {
 
     await test.step('tasks', async () => {
       await expect(page).toHaveURL('/woodland/tasks')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Woodland Management Plan')
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Apply for a woodland management plan (WMP)')
       await analyzeAccessibility(page)
       await assertTaskStatuses(page, [
         { name: 'Check your eligibility', status: 'Not started' },
@@ -194,7 +194,7 @@ test.describe('Woodland Management Plan application', () => {
 
     await test.step('tasks', async () => {
       await expect(page).toHaveURL('/woodland/tasks')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Woodland Management Plan')
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Apply for a woodland management plan (WMP)')
       await assertTaskStatuses(page, [
         { name: 'Check your eligibility', status: 'Completed' },
         { name: 'About your woodland', status: 'Not started' },
@@ -276,7 +276,7 @@ test.describe('Woodland Management Plan application', () => {
 
     await test.step('tasks', async () => {
       await expect(page).toHaveURL('/woodland/tasks')
-      await expect(page.getByRole('heading', { level: 1 })).toContainText('Woodland Management Plan')
+      await expect(page.getByRole('heading', { level: 1 })).toContainText('Apply for a woodland management plan (WMP)')
       await assertTaskStatuses(page, [
         { name: 'Check your eligibility', status: 'Completed' },
         { name: 'About your woodland', status: 'Completed' },
