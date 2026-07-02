@@ -8,10 +8,27 @@ const SBI = '107173507'
 
 test.describe('Woodland Management Plan application lifecycle', () => {
   const expectationIds = []
+  let statusQuery404ExpectationId
+
+  async function clearDefaultStatusQuery404Response() {
+    if (!statusQuery404ExpectationId) {
+      return
+    }
+
+    const index = expectationIds.indexOf(statusQuery404ExpectationId)
+
+    await clearExpectation(statusQuery404ExpectationId)
+    statusQuery404ExpectationId = undefined
+
+    if (index !== -1) {
+      expectationIds.splice(index, 1)
+    }
+  }
 
   test.beforeEach(async () => {
     await clearApplicationState(CRN, SBI)
-    expectationIds.push(await setDefaultStatusQuery404Response())
+    statusQuery404ExpectationId = await setDefaultStatusQuery404Response()
+    expectationIds.push(statusQuery404ExpectationId)
   })
 
   test.afterEach(async () => {
@@ -19,6 +36,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
       await clearExpectation(id)
     }
     expectationIds.length = 0
+    statusQuery404ExpectationId = undefined
   })
 
   test('submits, amends, receives an offer, and is withdrawn', { tag: ['@ci'] }, async ({ page: initialPage, browser }) => {
@@ -111,6 +129,8 @@ test.describe('Woodland Management Plan application lifecycle', () => {
 
       // declaration
       await expect(page).toHaveURL('/woodland/declaration')
+      // After submit, GAS should have a status for the generated reference.
+      await clearDefaultStatusQuery404Response()
       await page.getByRole('button', { name: 'Confirm and submit' }).click()
 
       // confirmation
