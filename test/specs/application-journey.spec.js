@@ -1,19 +1,20 @@
 import { test, expect } from '@playwright/test'
 import Ajv2020 from 'ajv/dist/2020.js'
 import { authenticateTo } from '../utils/auth.js'
-import { clearApplicationState } from '../utils/backend.js'
+import { clearApplicationData } from '../utils/backend.js'
 import { analyzeAccessibility } from '../utils/accessibility.js'
 import { getApplicationSubmission } from '../utils/gas.js'
 
 const CRN = '1100943757'
 const SBI = '113593357'
+const GRANT_CODE = 'woodland'
 
 test.describe('Woodland Management Plan application', () => {
   test.beforeEach(async () => {
-    await clearApplicationState(CRN, SBI)
+    await clearApplicationData(SBI, GRANT_CODE)
   })
 
-  test('submits a full WMP application from start to confirmation', { tag: ['@runme', '@cdp', '@ci'] }, async ({ page }) => {
+  test('submits a full WMP application from start to confirmation', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
     let referenceNumber
     await test.step('authentication', async () => {
       await authenticateTo(page, 'woodland', CRN)

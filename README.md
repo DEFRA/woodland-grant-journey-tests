@@ -96,7 +96,7 @@ woodland-grant-journey-tests/
 
 Journey tests authenticate via the `Defra ID` OIDC provider for the environment in use (real instance or stub). The `authenticate()` helper function handles the full OIDC redirect flow automatically.
 
-**Password:** set via `DEFRA_ID_USER_PASSWORD` env var (defaults to `x` locally)
+**Password:** hardcoded as `x` (the stub always accepts this password)
 
 Each test must supply its own CRN so tests can run in parallel without sharing session state.
 
