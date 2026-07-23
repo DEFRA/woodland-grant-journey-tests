@@ -1,12 +1,13 @@
 import { test, expect } from '@playwright/test'
-import { clearApplicationState } from '../utils/backend.js'
+import { clearApplicationData } from '../utils/backend.js'
 
 const CRN = '1100945520'
 const SBI = '106842593'
+const GRANT_CODE = 'woodland'
 
 test.describe('Whitelisting', () => {
   test.beforeEach(async () => {
-    await clearApplicationState(CRN, SBI)
+    await clearApplicationData(SBI, GRANT_CODE)
   })
 
   test('redirects a non-whitelisted user to the unauthorised page', { tag: ['@cdp', '@ci'] }, async ({ page }) => {
@@ -16,7 +17,7 @@ test.describe('Whitelisting', () => {
       const crnInput = page.locator('input#crn')
       await crnInput.waitFor({ state: 'visible', timeout: 90_000 })
       await crnInput.fill(CRN)
-      await page.locator('input#password').fill(process.env.DEFRA_ID_USER_PASSWORD ?? 'x')
+      await page.locator('input#password').fill('x')
       await page.locator('button[type="submit"]').click()
     })
 

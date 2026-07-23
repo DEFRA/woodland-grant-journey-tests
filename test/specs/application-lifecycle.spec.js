@@ -1,10 +1,11 @@
 import { test, expect } from '@playwright/test'
 import { authenticateTo } from '../utils/auth.js'
-import { clearApplicationState } from '../utils/backend.js'
+import { clearApplicationData } from '../utils/backend.js'
 import { clearExpectation, setDefaultStatusQuery404Response, getApplicationSubmission, setStatusQueryResponse } from '../utils/gas.js'
 
 const CRN = '1100943838'
 const SBI = '107173507'
+const GRANT_CODE = 'woodland'
 
 test.describe('Woodland Management Plan application lifecycle', () => {
   const expectationIds = []
@@ -26,7 +27,7 @@ test.describe('Woodland Management Plan application lifecycle', () => {
   }
 
   test.beforeEach(async () => {
-    await clearApplicationState(CRN, SBI)
+    await clearApplicationData(SBI, GRANT_CODE)
     statusQuery404ExpectationId = await setDefaultStatusQuery404Response()
     expectationIds.push(statusQuery404ExpectationId)
   })
