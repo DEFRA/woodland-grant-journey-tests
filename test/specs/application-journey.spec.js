@@ -33,7 +33,7 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page).toHaveURL('/woodland/update-details')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Update your details')
       await analyzeAccessibility(page)
-      await page.getByRole('link', { name: 'Back' }).click()
+      await page.getByRole('link', { name: 'Back', exact: true }).click()
 
       await expect(page).toHaveURL('/woodland/check-details')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Confirm your details')
@@ -66,7 +66,7 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page).toHaveURL('/woodland/exit-eligibility-land-registered')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('All the land in your application must be registered with the Rural Payments service')
       await analyzeAccessibility(page)
-      await page.getByRole('link', { name: 'Back' }).click()
+      await page.getByRole('link', { name: 'Back', exact: true }).click()
 
       await expect(page).toHaveURL('/woodland/eligibility-land-registered')
       await page.getByRole('radio', { name: 'Yes' }).click()
@@ -85,7 +85,7 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page).toHaveURL('/woodland/eligibility-tenant')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Are you a tenant of a public body?')
       await analyzeAccessibility(page)
-      await page.getByRole('link', { name: 'Back' }).click()
+      await page.getByRole('link', { name: 'Back', exact: true }).click()
     })
 
     await test.step('eligibility-management-control -> eligibility-countersignature', async () => {
@@ -104,7 +104,7 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page).toHaveURL('/woodland/exit-eligibility-countersignature')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('You must get your landlord\'s countersignature')
       await analyzeAccessibility(page)
-      await page.getByRole('link', { name: 'Back' }).click()
+      await page.getByRole('link', { name: 'Back', exact: true }).click()
 
       await expect(page).toHaveURL('/woodland/eligibility-countersignature')
       await page.getByRole('radio', { name: 'Yes' }).click()
@@ -121,7 +121,7 @@ test.describe('Woodland Management Plan application', () => {
     await test.step('eligibility-grazing-rights', async () => {
       await expect(page).toHaveURL('/woodland/eligibility-grazing-rights')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Are you applying for land covered by common or shared grazing rights?')
-      await page.getByRole('link', { name: 'Back' }).click()
+      await page.getByRole('link', { name: 'Back', exact: true }).click()
     })
 
     await test.step('eligibility-tenant -> eligibility-tenant-obligations', async () => {
@@ -141,7 +141,7 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page).toHaveURL('/woodland/exit-eligibility-tenant-obligations')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('You cannot apply for a woodland management plan (WMP) for any work that is a requirement of your tenancy or any other legally binding obligation')
       await analyzeAccessibility(page)
-      await page.getByRole('link', { name: 'Back' }).click()
+      await page.getByRole('link', { name: 'Back', exact: true }).click()
 
       await expect(page).toHaveURL('/woodland/eligibility-tenant-obligations')
       await page.getByRole('radio', { name: 'No' }).click()
@@ -168,7 +168,7 @@ test.describe('Woodland Management Plan application', () => {
       await expect(page).toHaveURL('/woodland/eligibility-higher-tier')
       await expect(page.getByRole('heading', { level: 1 })).toContainText('Countryside Stewardship Higher Tier (CSHT)')
       await analyzeAccessibility(page)
-      await page.getByRole('link', { name: 'Back' }).click()
+      await page.getByRole('link', { name: 'Back', exact: true }).click()
     })
 
     await test.step('eligibility-valid-wmp -> eligibility-wmp-agreement', async () => {
